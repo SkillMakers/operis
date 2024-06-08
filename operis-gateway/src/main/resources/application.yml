@@ -7,18 +7,20 @@ spring:
   application:
     name: operis-gateway
   cloud:
+    discovery:
+      enabled: true
     gateway:
       routes:
-        - id: operis-user-service
+        - id: user-service
           uri: lb://operis-user-service
           predicates:
-            - Path=/users/**
+            - Path=/api/users/**
           filters:
             - AddRequestHeader=User-Request, Gateway
-        - id: operis-task-service
+        - id: task-service
           uri: lb://operis-task-service
           predicates:
-            - Path=/tasks/**
+            - Path=/api/tasks/**
           filters:
             - AddRequestHeader=Order-Request, Gateway
 

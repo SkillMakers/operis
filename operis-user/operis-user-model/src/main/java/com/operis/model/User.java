@@ -26,6 +26,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
