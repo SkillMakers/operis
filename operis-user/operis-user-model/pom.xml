@@ -5,21 +5,26 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.operis</groupId>
-        <artifactId>operis-parent</artifactId>
+        <artifactId>operis-user</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>operis-user</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>operis-user-model</module>
-        <module>operis-user-service</module>
-    </modules>
+    <artifactId>operis-user-model</artifactId>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+    <!-- Dépendance Spring Boot Starter Data JPA pour JPA et Hibernate -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    </dependencies>
 
 </project>

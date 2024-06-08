@@ -21,7 +21,6 @@
         <module>operis-discovery</module>
         <module>operis-user</module>
         <module>operis-task</module>
-        <module>operis-task/operis-task-service</module>
         <module>operis-gateway</module>
     </modules>
 
@@ -31,6 +30,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version> <!-- Version actuelle de Lombok -->
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

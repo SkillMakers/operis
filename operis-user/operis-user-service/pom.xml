@@ -11,6 +11,10 @@
 
     <artifactId>operis-user-service</artifactId>
 
+    <properties>
+        <operis.user.model.version>1.0-SNAPSHOT</operis.user.model.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -26,6 +30,19 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- Dépendance MySQL Connector pour se connecter à MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.operis</groupId>
+            <artifactId>operis-user-model</artifactId>
+            <version>${operis.user.model.version}</version>
         </dependency>
 
         <dependency>
