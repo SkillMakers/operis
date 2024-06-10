@@ -14,9 +14,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    @PostMapping("/create")
+    public ResponseEntity<UserDTO> findUserById(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
+        UserDTO userDTO = userService.findById(id);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 }
