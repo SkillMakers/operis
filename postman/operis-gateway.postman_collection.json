@@ -53,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"imad.bouakl@gmail.com\",\r\n    \"password\": \"password\"\r\n  }",
+					"raw": "{\r\n    \"email\": \"imad.bouakl@test.fr\",\r\n    \"password\": \"password\"\r\n  }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,6 +92,96 @@
 						"api",
 						"users",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-01\",\n           \"userId\": 1\n         }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/profiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"profiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n           \"id\": 1,\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-02\",\n           \"userId\": 1\n         }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/profiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"profiles"
 					]
 				}
 			},
