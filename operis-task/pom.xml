@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>operis-task-model</module>
         <module>operis-task-service</module>
     </modules>
 

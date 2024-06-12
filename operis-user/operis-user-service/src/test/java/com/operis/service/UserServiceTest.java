@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -42,7 +41,7 @@ public class UserServiceTest {
         // Then
         assertNotNull(createdUserDTO);
         assertEquals(userDTO.getEmail(), createdUserDTO.getEmail());
-        assertEquals(userDTO.getPassword(), createdUserDTO.getPassword());
+        assertNull(createdUserDTO.getPassword());
 
         // Vérifie que le userRepository.save() a été appelé avec un argument de type User
         verify(userRepository, times(1)).save(any(User.class));

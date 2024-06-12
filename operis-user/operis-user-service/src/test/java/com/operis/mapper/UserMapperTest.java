@@ -30,7 +30,7 @@ class UserMapperTest {
         assertNotNull(userDTO);
         assertEquals(user.getId(), userDTO.getId());
         assertEquals(user.getEmail(), userDTO.getEmail());
-        assertEquals(user.getPassword(), userDTO.getPassword());
+        assertNull(userDTO.getPassword());
         assertEquals(user.getCreatedAt(), userDTO.getCreatedAt());
         assertEquals(user.getUpdatedAt(), userDTO.getUpdatedAt());
     }
