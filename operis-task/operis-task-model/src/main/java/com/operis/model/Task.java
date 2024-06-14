@@ -35,8 +35,9 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskHistory> history = new ArrayList<>();
 
-    @Column(nullable = false)
-    private Long projectId; // ID du projet auquel la tâche est associée
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project; // Référence au projet auquel cette tâche est associée
 
     private LocalDateTime createdAt;
 
