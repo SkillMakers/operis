@@ -20,7 +20,7 @@ spring:
         - id: task-service
           uri: lb://operis-task-service
           predicates:
-            - Path=/api/tasks/**
+            - Path=/api/tasks/**,/api/projects/**
           filters:
             - AddRequestHeader=Order-Request, Gateway
 
