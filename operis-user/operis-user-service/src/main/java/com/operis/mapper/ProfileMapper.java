@@ -6,12 +6,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface ProfileMapper {
 
-    @Mapping(source = "user.id", target = "userId")
     ProfileDTO toDto(Profile profile);
 
-    @Mapping(source = "userId", target = "user.id")
     Profile toEntity(ProfileDTO profileDTO);
 }

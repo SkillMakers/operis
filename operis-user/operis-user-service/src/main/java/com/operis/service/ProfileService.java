@@ -9,7 +9,9 @@ import com.operis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -24,7 +26,7 @@ public class ProfileService {
     private ProfileMapper profileMapper;
 
     public ProfileDTO createOrUpdateProfile(ProfileDTO profileDTO) {
-        Optional<User> optionalUser = userRepository.findById(profileDTO.getUserId());
+        Optional<User> optionalUser = userRepository.findById(profileDTO.getUser().getId());
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -34,5 +36,12 @@ public class ProfileService {
 
         Profile savedProfile = profileRepository.save(profile);
         return profileMapper.toDto(savedProfile);
+    }
+
+    public List<ProfileDTO> searchProfiles(String search) {
+        return profileRepository.findByFirstNameOrLastName(search).stream()
+                .map(profileMapper::toDto)
+                .collect(Collectors.toList());
+        
     }
 }

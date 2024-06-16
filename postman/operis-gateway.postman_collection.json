@@ -44,6 +44,16 @@
 		{
 			"name": "Login",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -119,7 +129,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-01\",\n           \"userId\": 1\n         }",
+					"raw": "{\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-01\",\n           \"user\": {\n            \"id\":1\n           }\n         }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -164,7 +174,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n           \"id\": 1,\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-02\",\n           \"userId\": 1\n         }",
+					"raw": "{\n           \"id\": 1,\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-02\",\n           \"user\": {\n                \"id\":1\n           }\n         }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -230,6 +240,44 @@
 					"path": [
 						"api",
 						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search profiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users/profiles/search?search=BOU",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"profiles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "BOU"
+						}
 					]
 				}
 			},
