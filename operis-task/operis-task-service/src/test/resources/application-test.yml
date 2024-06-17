@@ -17,3 +17,11 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
+management:
+  tracing:
+    sampling:
+      probability: 0.0  # Désactive le sampling pour le profil de test
+  otlp:
+    tracing:
+      endpoint:
+

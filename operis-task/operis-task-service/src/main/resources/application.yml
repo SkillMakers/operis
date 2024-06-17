@@ -13,6 +13,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+tracing:
+  url:  http://localhost:4317
+
+
 server:
   port: 8082
 
@@ -25,3 +33,11 @@ eureka:
 
 code:
   secret: mAvsZD2KqE2Kv6VpF+VkN1P3PT+2uq5z0g2ZxF0StSc=
+
+logging:
+  level:
+    root: DEBUG
+    io.jaegertracing: DEBUG
+    io.opentracing: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
