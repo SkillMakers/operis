@@ -9,7 +9,7 @@ ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 
 # Exposer le port sur lequel votre application s'exécute
-EXPOSE 8080
+EXPOSE 8761
 
 # Définir le point d'entrée pour l'exécution de l'application
 ENTRYPOINT ["java", "-jar", "/app.jar"]

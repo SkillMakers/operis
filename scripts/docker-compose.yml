@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  eureka:
+    image: ibouakl/operis-discovery:1.0-SNAPSHOT
+    container_name: operis-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - mynetwork
+
+  user-service:
+    image: ibouakl/operis-user-service:1.0-SNAPSHOT
+    container_name: operis-user-service
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+      - userdb
+
+  task-service:
+    image: ibouakl/operis-task-service:1.0-SNAPSHOT
+    container_name: operis-task-service
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/taskdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+      - taskdb
+
+  gateway:
+    image: ibouakl/operis-gateway:1.0-SNAPSHOT
+    container_name: operis-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+      - user-service
+      - task-service
+
+  userdb:
+    image: mysql:latest
+    container_name: userdb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: userdb
+    ports:
+      - "3307:3306"  # Optional, for local access
+    networks:
+      - mynetwork
+    volumes:
+      - userdb-data:/var/lib/mysql
+
+  taskdb:
+    image: mysql:latest
+    container_name: taskdb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: taskdb
+    ports:
+      - "3308:3306"  # Optional, for local access
+    networks:
+      - mynetwork
+    volumes:
+      - taskdb-data:/var/lib/mysql
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  userdb-data:
+  taskdb-data:

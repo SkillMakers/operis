@@ -38,6 +38,14 @@
             <id>docker</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>com.operis.OperisDiscoveryApplication</mainClass>
+                            <layout>JAR</layout>
+                        </configuration>
+                    </plugin>
                     <!-- Plugin pour construire l'image Docker -->
                     <plugin>
                         <groupId>com.spotify</groupId>
@@ -51,7 +59,7 @@
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <repository>${project.artifactId}</repository>
+                                    <repository>ibouakl/${project.artifactId}</repository>
                                     <tag>${project.version}</tag>
                                     <buildArgs>
                                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
