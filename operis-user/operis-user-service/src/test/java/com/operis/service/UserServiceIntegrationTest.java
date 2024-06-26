@@ -3,25 +3,33 @@ package com.operis.service;
 import com.operis.dto.UserDTO;
 import com.operis.model.User;
 import com.operis.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.yml")
-public class UserServiceTest {
+public class UserServiceIntegrationTest {
 
     @Autowired
     private UserService userService;
 
-    @MockBean
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    public void setup() {
+        userRepository.deleteAll();
+    }
 
     @Test
     public void testCreateUser() {
@@ -30,21 +38,17 @@ public class UserServiceTest {
         userDTO.setEmail("test@example.com");
         userDTO.setPassword("password");
 
-        User user = new User();
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-
-        when(userRepository.save(any(User.class))).thenReturn(user);
-
         // When
         UserDTO createdUserDTO = userService.createUser(userDTO);
 
         // Then
-        assertNotNull(createdUserDTO);
-        assertEquals(userDTO.getEmail(), createdUserDTO.getEmail());
-        assertNull(createdUserDTO.getPassword());
+        assertThat(createdUserDTO).isNotNull();
+        assertThat(createdUserDTO.getId()).isNotNull();
 
-        // Vérifie que le userRepository.save() a été appelé avec un argument de type User
-        verify(userRepository, times(1)).save(any(User.class));
+        // Check if user is saved in repository
+        User savedUser = userRepository.findById(createdUserDTO.getId()).orElse(null);
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getEmail()).isEqualTo(userDTO.getEmail());
+        assertThat(passwordEncoder.matches(userDTO.getPassword(), savedUser.getPassword())).isTrue();
     }
 }
