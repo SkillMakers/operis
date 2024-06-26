@@ -1,0 +1,3 @@
+tracing:
+  url:  http://jaeger:4317
+

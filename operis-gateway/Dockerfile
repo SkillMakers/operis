@@ -12,4 +12,4 @@ COPY ${JAR_FILE} app.jar
 EXPOSE 8080
 
 # Définir le point d'entrée pour l'exécution de l'application
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar","--spring.profiles.active=docker"]
