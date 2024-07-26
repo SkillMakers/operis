@@ -19,6 +19,7 @@
 
     <modules>
         <module>operis-discovery</module>
+        <module>operis-config</module>
         <module>operis-user</module>
         <module>operis-task</module>
         <module>operis-gateway</module>

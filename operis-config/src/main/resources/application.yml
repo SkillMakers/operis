@@ -1,0 +1,22 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: operis-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ibouakl/operis-config-repo
+          username: ibouakl
+          password: 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
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+
+
