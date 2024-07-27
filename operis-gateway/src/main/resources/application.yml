@@ -2,46 +2,7 @@ server:
   port: 8080
 
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: operis-gateway
-  cloud:
-    discovery:
-      enabled: true
-    gateway:
-      routes:
-        - id: user-service
-          uri: lb://operis-user-service
-          predicates:
-            - Path=/api/users/**, /api/auth/login
-          filters:
-            - AddRequestHeader=User-Request, Gateway
-        - id: task-service
-          uri: lb://operis-task-service
-          predicates:
-            - Path=/api/tasks/**,/api/projects/**
-          filters:
-            - AddRequestHeader=Order-Request, Gateway
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-tracing:
-  url:  http://localhost:4317
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-code:
-  secret: mAvsZD2KqE2Kv6VpF+VkN1P3PT+2uq5z0g2ZxF0StSc=
-
-logging:
-  level:
-    root: DEBUG
-    io.jaegertracing: DEBUG
-    io.opentracing: DEBUG
-    org.springframework: DEBUG
-    org.springframework.web: DEBUG
+  config:
+    import: optional:configserver:http://localhost:8888
