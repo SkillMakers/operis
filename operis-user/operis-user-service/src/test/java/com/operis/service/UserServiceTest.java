@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 public class UserServiceTest {
 
     @Autowired
