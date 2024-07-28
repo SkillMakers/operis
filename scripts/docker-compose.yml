@@ -9,6 +9,18 @@ services:
     networks:
       - mynetwork
 
+  config-server:
+    image: ibouakl/operis-config:1.0-SNAPSHOT
+    container_name: operis-config-server
+    ports:
+      - "8888:8888"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+
   user-service:
     image: ibouakl/operis-user-service:1.0-SNAPSHOT
     container_name: operis-user-service
@@ -22,6 +34,7 @@ services:
     depends_on:
       - eureka
       - userdb
+      - config-server
 
   task-service:
     image: ibouakl/operis-task-service:1.0-SNAPSHOT
@@ -36,6 +49,7 @@ services:
     depends_on:
       - eureka
       - taskdb
+      - config-server
 
   gateway:
     image: ibouakl/operis-gateway:1.0-SNAPSHOT
@@ -50,6 +64,7 @@ services:
       - eureka
       - user-service
       - task-service
+      - config-server
 
   userdb:
     image: mysql:latest
