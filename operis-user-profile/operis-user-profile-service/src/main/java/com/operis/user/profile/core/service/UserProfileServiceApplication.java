@@ -1,4 +1,4 @@
-package com.operis.user.profile.model;
+package com.operis.user.profile.core.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.operis.user.profile.model;
+package com.operis.user.profile.core.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
