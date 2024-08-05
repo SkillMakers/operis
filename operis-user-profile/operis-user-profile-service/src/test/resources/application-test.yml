@@ -1,0 +1,10 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: operis-user-profile-service
+
+eureka:
+  client:
+    enabled: false # Disable Eureka client entirely
