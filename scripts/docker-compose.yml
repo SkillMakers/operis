@@ -90,6 +90,19 @@ services:
     volumes:
       - taskdb-data:/var/lib/mysql
 
+  user-profiles-db:
+    image: mysql:latest
+    container_name: user-profiles-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: operis-user-profiles
+    ports:
+      - "3309:3306"  # Optional, for local access
+    networks:
+      - mynetwork
+    volumes:
+      - user-profiles-db-data:/var/lib/mysql
+
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
@@ -109,3 +122,4 @@ networks:
 volumes:
   userdb-data:
   taskdb-data:
+  user-profiles-db-data:

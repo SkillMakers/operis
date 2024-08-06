@@ -12,7 +12,7 @@
     <artifactId>operis-user-profile</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>operis-user-profile-model</module>
+        <module>operis-user-profile-core</module>
         <module>operis-user-profile-service</module>
     </modules>
 
