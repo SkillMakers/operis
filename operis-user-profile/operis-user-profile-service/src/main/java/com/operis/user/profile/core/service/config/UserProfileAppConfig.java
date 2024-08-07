@@ -1,5 +1,6 @@
 package com.operis.user.profile.core.service.config;
 
+import com.operis.user.profile.core.application.port.in.UserProfileUseCases;
 import com.operis.user.profile.core.application.port.out.persistence.UserProfileRepository;
 import com.operis.user.profile.core.application.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class UserProfileAppConfig {
     private UserProfileRepository userProfileRepository;
 
     @Bean
-    public UserProfileService userProfileService() {
+    public UserProfileUseCases userProfileService() {
         return new UserProfileService(userProfileRepository);
     }
 }
