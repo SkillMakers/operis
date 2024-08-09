@@ -26,7 +26,7 @@ services:
     container_name: operis-user-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/operis-user
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
@@ -35,12 +35,28 @@ services:
       - userdb
       - config-server
 
+  user-profile-service:
+    image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
+    container_name: operis-user-profile-service
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
+      SPRING_DATASOURCE_USERNAME: root
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+      - userprofiledb
+      - config-server
+    ports:
+      - "8083:8083" # Optional, for local access
+
   task-service:
     image: ibouakl/operis-task-service:1.0-SNAPSHOT
     container_name: operis-task-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/taskdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/operis-task
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
@@ -90,18 +106,18 @@ services:
     volumes:
       - taskdb-data:/var/lib/mysql
 
-  user-profiles-db:
+  userprofiledb:
     image: mysql:latest
-    container_name: user-profiles-db
+    container_name: userprofiledb
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: operis-user-profiles
+      MYSQL_DATABASE: operis-user-profile
     ports:
       - "3309:3306"  # Optional, for local access
     networks:
       - mynetwork
     volumes:
-      - user-profiles-db-data:/var/lib/mysql
+      - userprofiledb-data:/var/lib/mysql
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -122,4 +138,4 @@ networks:
 volumes:
   userdb-data:
   taskdb-data:
-  user-profiles-db-data:
+  userprofiledb-data:
