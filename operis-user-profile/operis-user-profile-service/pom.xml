@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.operis</groupId>
-            <artifactId>operis-user-profile-model</artifactId>
+            <artifactId>operis-user-profile-core</artifactId>
             <version>${operis.user.profile.model.version}</version>
         </dependency>
         <dependency>
