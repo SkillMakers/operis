@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.operis</groupId>
-        <artifactId>operis-user</artifactId>
+        <artifactId>operis-user-account</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>operis-user-service</artifactId>
+    <artifactId>operis-user-account-service</artifactId>
 
     <properties>
         <operis.user.model.version>1.0-SNAPSHOT</operis.user.model.version>

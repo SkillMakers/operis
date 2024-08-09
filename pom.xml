@@ -20,7 +20,7 @@
     <modules>
         <module>operis-discovery</module>
         <module>operis-config</module>
-        <module>operis-user</module>
+        <module>operis-user-account</module>
         <module>operis-user-profile</module>
         <module>operis-task</module>
         <module>operis-gateway</module>

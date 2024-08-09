@@ -4,7 +4,25 @@ server:
 spring:
   application:
     name: operis-user-profile-service
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  cloud:
+    config:
+      enabled: false
 
 eureka:
   client:
     enabled: false # Disable Eureka client entirely
+
+management:
+  tracing:
+    sampling:
+      probability: 0.0  # Désactive le sampling pour le profil de test
+tracing:
+  url: http://localhost:4317

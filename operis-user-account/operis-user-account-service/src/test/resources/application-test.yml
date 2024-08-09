@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: operis-user-service
+    name: operis-user-account-service
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -29,6 +29,6 @@ management:
     sampling:
       probability: 0.0  # Désactive le sampling pour le profil de test
 tracing:
-  url:  http://localhost:4317
+  url: http://localhost:4317
 
 

@@ -9,11 +9,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>operis-user</artifactId>
+    <artifactId>operis-user-account</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>operis-user-model</module>
-        <module>operis-user-service</module>
+        <module>operis-user-account-model</module>
+        <module>operis-user-account-service</module>
     </modules>
 
     <properties>

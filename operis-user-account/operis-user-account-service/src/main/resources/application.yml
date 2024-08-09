@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: operis-user-service
+    name: operis-user-account-service
   config:
     import: optional:configserver:http://localhost:8888
 
