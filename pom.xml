@@ -24,6 +24,7 @@
         <module>operis-user-profile</module>
         <module>operis-task</module>
         <module>operis-gateway</module>
+        <module>operis-subscription</module>
     </modules>
 
     <properties>
