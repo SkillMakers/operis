@@ -1,15 +1,15 @@
 package com.operis.mapper;
 
-import com.operis.dto.UserDTO;
+import com.operis.dto.UserAccountDTO;
 import com.operis.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public interface UserAccountMapper {
 
     @Mapping(target = "password", ignore = true)
-    UserDTO toUserDTO(User user);
+    UserAccountDTO toUserDTO(User user);
 
-    User toUser(UserDTO userDTO);
+    User toUser(UserAccountDTO userAccountDTO);
 }

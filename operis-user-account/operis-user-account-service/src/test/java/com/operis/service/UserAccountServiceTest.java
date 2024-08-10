@@ -1,6 +1,6 @@
 package com.operis.service;
 
-import com.operis.dto.UserDTO;
+import com.operis.dto.UserAccountDTO;
 import com.operis.model.User;
 import com.operis.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -8,17 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UserServiceTest {
+public class UserAccountServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserAccountService userAccountService;
 
     @MockBean
     private UserRepository userRepository;
@@ -26,23 +25,23 @@ public class UserServiceTest {
     @Test
     public void testCreateUser() {
         // Given
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("test@example.com");
-        userDTO.setPassword("password");
+        UserAccountDTO userAccountDTO = new UserAccountDTO();
+        userAccountDTO.setEmail("test@example.com");
+        userAccountDTO.setPassword("password");
 
         User user = new User();
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setEmail(userAccountDTO.getEmail());
+        user.setPassword(userAccountDTO.getPassword());
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // When
-        UserDTO createdUserDTO = userService.createUser(userDTO);
+        UserAccountDTO createdUserAccountDTO = userAccountService.createUser(userAccountDTO);
 
         // Then
-        assertNotNull(createdUserDTO);
-        assertEquals(userDTO.getEmail(), createdUserDTO.getEmail());
-        assertNull(createdUserDTO.getPassword());
+        assertNotNull(createdUserAccountDTO);
+        assertEquals(userAccountDTO.getEmail(), createdUserAccountDTO.getEmail());
+        assertNull(createdUserAccountDTO.getPassword());
 
         // Vérifie que le userRepository.save() a été appelé avec un argument de type User
         verify(userRepository, times(1)).save(any(User.class));

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "custom_user")
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,6 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
-
     @Column(nullable = false)
     private String password;
 
@@ -25,9 +24,6 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
 
     @PrePersist
     protected void onCreate() {

@@ -1,6 +1,6 @@
 package com.operis.service;
 
-import com.operis.dto.UserDTO;
+import com.operis.dto.UserAccountDTO;
 import com.operis.model.User;
 import com.operis.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,16 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UserServiceIntegrationTest {
+public class UserAccountServiceIntegrationTest {
 
     @Autowired
-    private UserService userService;
+    private UserAccountService userAccountService;
 
     @Autowired
     private UserRepository userRepository;
@@ -34,21 +33,21 @@ public class UserServiceIntegrationTest {
     @Test
     public void testCreateUser() {
         // Given
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("test@example.com");
-        userDTO.setPassword("password");
+        UserAccountDTO userAccountDTO = new UserAccountDTO();
+        userAccountDTO.setEmail("test@example.com");
+        userAccountDTO.setPassword("password");
 
         // When
-        UserDTO createdUserDTO = userService.createUser(userDTO);
+        UserAccountDTO createdUserAccountDTO = userAccountService.createUser(userAccountDTO);
 
         // Then
-        assertThat(createdUserDTO).isNotNull();
-        assertThat(createdUserDTO.getId()).isNotNull();
+        assertThat(createdUserAccountDTO).isNotNull();
+        assertThat(createdUserAccountDTO.getId()).isNotNull();
 
         // Check if user is saved in repository
-        User savedUser = userRepository.findById(createdUserDTO.getId()).orElse(null);
+        User savedUser = userRepository.findById(createdUserAccountDTO.getId()).orElse(null);
         assertThat(savedUser).isNotNull();
-        assertThat(savedUser.getEmail()).isEqualTo(userDTO.getEmail());
-        assertThat(passwordEncoder.matches(userDTO.getPassword(), savedUser.getPassword())).isTrue();
+        assertThat(savedUser.getEmail()).isEqualTo(userAccountDTO.getEmail());
+        assertThat(passwordEncoder.matches(userAccountDTO.getPassword(), savedUser.getPassword())).isTrue();
     }
 }

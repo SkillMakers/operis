@@ -1,17 +1,15 @@
 package com.operis.service;
 
-import com.operis.dto.UserDTO;
-import com.operis.mapper.UserMapper;
+import com.operis.dto.UserAccountDTO;
+import com.operis.mapper.UserAccountMapper;
 import com.operis.model.User;
 import com.operis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class UserService {
+public class UserAccountService {
 
     @Autowired
     private UserRepository userRepository;
@@ -20,16 +18,16 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserAccountMapper userAccountMapper;
 
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.toUser(userDTO);
+    public UserAccountDTO createUser(UserAccountDTO userAccountDTO) {
+        User user = userAccountMapper.toUser(userAccountDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
-        return userMapper.toUserDTO(user);
+        return userAccountMapper.toUserDTO(user);
     }
 
-    public UserDTO findById(Long id) {
-        return userRepository.findById(id).map(user -> userMapper.toUserDTO(user)).orElse(null);
+    public UserAccountDTO findById(Long id) {
+        return userRepository.findById(id).map(user -> userAccountMapper.toUserDTO(user)).orElse(null);
     }
 }

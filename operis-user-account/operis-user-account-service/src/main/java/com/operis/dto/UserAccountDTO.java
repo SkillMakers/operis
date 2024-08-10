@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDTO {
+public class UserAccountDTO {
     private Long id;
     @Email(message = "L'adresse email ne respecte pas le bon format")
     private String email;
