@@ -21,26 +21,42 @@ services:
     depends_on:
       - eureka
 
-  user-service:
-    image: ibouakl/operis-user-service:1.0-SNAPSHOT
-    container_name: operis-user-service
+  user-account-service:
+    image: ibouakl/operis-user-account-service:1.0-SNAPSHOT
+    container_name: operis-user-account-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://useraccountdb:3306/operis-user-account
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
     depends_on:
       - eureka
-      - userdb
+      - useraccountdb
       - config-server
+
+  user-profile-service:
+    image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
+    container_name: operis-user-profile-service
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
+      SPRING_DATASOURCE_USERNAME: root
+    networks:
+      - mynetwork
+    depends_on:
+      - eureka
+      - userprofiledb
+      - config-server
+    ports:
+      - "8083:8083" # Optional, for local access
 
   task-service:
     image: ibouakl/operis-task-service:1.0-SNAPSHOT
     container_name: operis-task-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/taskdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/operis-task
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
@@ -60,22 +76,22 @@ services:
       - mynetwork
     depends_on:
       - eureka
-      - user-service
+      - user-account-service
       - task-service
       - config-server
 
-  userdb:
+  useraccountdb:
     image: mysql:latest
-    container_name: userdb
+    container_name: useraccountdb
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: operis-user
+      MYSQL_DATABASE: operis-user-account
     ports:
       - "3307:3306"  # Optional, for local access
     networks:
       - mynetwork
     volumes:
-      - userdb-data:/var/lib/mysql
+      - useraccountdb-data:/var/lib/mysql
 
   taskdb:
     image: mysql:latest
@@ -89,6 +105,19 @@ services:
       - mynetwork
     volumes:
       - taskdb-data:/var/lib/mysql
+
+  userprofiledb:
+    image: mysql:latest
+    container_name: userprofiledb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: operis-user-profile
+    ports:
+      - "3309:3306"  # Optional, for local access
+    networks:
+      - mynetwork
+    volumes:
+      - userprofiledb-data:/var/lib/mysql
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -107,5 +136,6 @@ networks:
     driver: bridge
 
 volumes:
-  userdb-data:
+  useraccountdb-data:
   taskdb-data:
+  userprofiledb-data:

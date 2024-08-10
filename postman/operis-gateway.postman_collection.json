@@ -1,287 +1,353 @@
 {
-	"info": {
-		"_postman_id": "996a854f-c0fa-49e4-b715-aab5a5993ce3",
-		"name": "operis-gateway",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10651879"
-	},
-	"item": [
-		{
-			"name": "Create User",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"imad.bouakl@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/users/create",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"create"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"imad.bouakl@test.fr\",\r\n    \"password\": \"password\"\r\n  }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/auth/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get user by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/users/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create profile",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-01\",\n           \"user\": {\n            \"id\":1\n           }\n         }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/users/profiles",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"profiles"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Profile",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n           \"id\": 1,\n           \"firstName\": \"Imad\",\n           \"lastName\": \"BOU AKL\",\n           \"birthDate\": \"1983-01-02\",\n           \"user\": {\n                \"id\":1\n           }\n         }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/users/profiles",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"profiles"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create project",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer YOUR_JWT_TOKEN"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n           \"name\": \"New Project\",\r\n           \"description\": \"Description of the new project\"\r\n         }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/projects",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"projects"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Search profiles",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/users/profiles/search?search=BOU",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users",
-						"profiles",
-						"search"
-					],
-					"query": [
-						{
-							"key": "search",
-							"value": "BOU"
-						}
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "15d7fa03-341f-42e0-8db5-a12fbeabce79",
+    "name": "operis-gateway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20192724"
+  },
+  "item": [
+    {
+      "name": "user-profiles",
+      "item": [
+        {
+          "name": "Create user profile Imad",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Imad\",\n    \"lastName\": \"BOU AKL\",\n    \"birthDate\": \"1983-01-01\",\n    \"email\": \"imad.test@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/user-profiles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "user-profiles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create user profile Ronald",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Ronald\",\n    \"lastName\": \"POLANCO\",\n    \"birthDate\": \"1980-01-01\",\n    \"email\": \"ronald.test@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/user-profiles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "user-profiles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTgxMzc1OTEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.q9W4-7cjotgA1-XBp_iPpQukmWZSs14UbdrwNfQN7hY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 1,\n    \"firstName\": \"Imad Updated\",\n    \"lastName\": \"BOU AKL\",\n    \"birthDate\": \"1983-01-01\",\n    \"email\": \"imad.test@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/user-profiles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "user-profiles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search user profiles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/user-profiles/search?query=O",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "user-profiles",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "O"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user-accounts",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"imad.bouakl@gmail.com\",\r\n    \"password\": \"password\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"imad.bouakl@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/users/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjI3MDI0MzUsInN1YiI6ImltYWQuYm91YWtsQGdtYWlsLmNvbSJ9.NOEZausKX5XLVmcrCMRDqA-VFyNLDhE66nZS2xeXky0",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "projetcs",
+      "item": [
+        {
+          "name": "Create project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTg0MDIyMjEsInN1YiI6ImltYWQuYm91YWtsQHRlc3QuZnIifQ.1H43UQ26O7hbjv9662fvxv-Z6iXxRO6MMs2QqMKmaYE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_JWT_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n           \"name\": \"New Project\",\r\n           \"description\": \"Description of the new project\"\r\n         }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/projects",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "projects"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }

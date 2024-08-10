@@ -1,0 +1,6 @@
+tracing:
+  url: http://jaeger:4317
+
+spring:
+  config:
+    import: optional:configserver:http://operis-config-server:8888

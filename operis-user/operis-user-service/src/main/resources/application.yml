@@ -1,9 +1,0 @@
-server:
-  port: 8081
-
-spring:
-  application:
-    name: operis-user-service
-  config:
-    import: optional:configserver:http://localhost:8888
-
