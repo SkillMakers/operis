@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,5 +30,11 @@ public class JPAUserProfileRepository implements UserProfileRepository {
         return userProfileEntityMapper.toDomain(
                 jpaUserProfileSpringDataRepository.findByFirstNameOrLastName(criteria.query())
         );
+    }
+
+    @Override
+    public Optional<UserProfile> findById(Long id) {
+        return jpaUserProfileSpringDataRepository.findById(id)
+                .map(userProfileEntityMapper::toDomain);
     }
 }

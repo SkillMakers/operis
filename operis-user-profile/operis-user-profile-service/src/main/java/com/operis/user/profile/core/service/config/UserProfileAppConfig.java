@@ -1,8 +1,8 @@
 package com.operis.user.profile.core.service.config;
 
+import com.operis.user.profile.core.application.adapter.in.UserProfileService;
 import com.operis.user.profile.core.application.port.in.UserProfileUseCases;
 import com.operis.user.profile.core.application.port.out.persistence.UserProfileRepository;
-import com.operis.user.profile.core.application.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
