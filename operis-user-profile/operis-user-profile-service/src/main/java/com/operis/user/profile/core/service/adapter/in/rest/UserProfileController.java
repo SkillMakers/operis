@@ -7,6 +7,8 @@ import com.operis.user.profile.core.service.adapter.in.rest.model.CreateUserProf
 import com.operis.user.profile.core.service.adapter.in.rest.model.UpdateUserProfilePayload;
 import com.operis.user.profile.core.service.adapter.in.rest.model.UserProfileDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +23,11 @@ public class UserProfileController {
     private final UserProfileMapper userProfileMapper;
 
     @PostMapping("")
-    public UserProfileDto create(@RequestBody CreateUserProfilePayload payload) {
-        return userProfileMapper.toDto(
+    public ResponseEntity<UserProfileDto> create(@RequestBody CreateUserProfilePayload payload) {
+        UserProfileDto userProfileDto = userProfileMapper.toDto(
                 userProfileUseCases.save(userProfileMapper.toDomain(payload))
         );
+        return new ResponseEntity<>(userProfileDto, HttpStatus.CREATED);
     }
 
     @PutMapping("")
