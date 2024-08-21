@@ -78,16 +78,15 @@ public class ProjectService implements ProjectUseCases {
                 command.owner(),
                 command.assignedTo().getUserEmail());
 
-        foundProject.addTask(new ProjectTask(
+        taskRepository.save(task);
+
+        return foundProject.copyAppendingTask(new ProjectTask(
                 task.id(),
                 task.title(),
                 task.description(),
                 task.owner(),
                 command.assignedTo()
         ));
-
-        taskRepository.save(task);
-        return projectRepository.save(foundProject);
     }
 
     @Override

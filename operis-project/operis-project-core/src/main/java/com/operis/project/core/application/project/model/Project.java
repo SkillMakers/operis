@@ -53,6 +53,20 @@ public record Project(
                 false);
     }
 
+    public Project copyAppendingTask(ProjectTask task) {
+        return new Project(
+                this.id(),
+                this.owner(),
+                this.name(),
+                this.description(),
+                this.createdAt(),
+                Stream.concat(
+                        Objects.requireNonNull(this.tasks, "tasks must not be null")
+                                .stream(), Stream.of(task)).toList(),
+                this.members,
+                false);
+    }
+
     public void addTask(ProjectTask task) {
         if (!members.contains(task.assignedTo())) {
             throw new IllegalArgumentException("Task cannot be assigned to a non-member");

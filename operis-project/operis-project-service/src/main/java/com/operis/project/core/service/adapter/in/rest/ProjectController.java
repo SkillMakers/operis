@@ -2,10 +2,7 @@ package com.operis.project.core.service.adapter.in.rest;
 
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
-import com.operis.project.core.service.adapter.in.rest.model.ChangeProjectDescriptionPayload;
-import com.operis.project.core.service.adapter.in.rest.model.ChangeProjectNamePayload;
-import com.operis.project.core.service.adapter.in.rest.model.CreateProjectPayload;
-import com.operis.project.core.service.adapter.in.rest.model.ProjectDto;
+import com.operis.project.core.service.adapter.in.rest.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +17,9 @@ public class ProjectController {
     private final JWTTokenService jwtTokenService;
 
     @PostMapping("")
-    public ProjectDto createProject(@RequestBody CreateProjectPayload payload, @RequestHeader("Authorization") String token) {
-        String connectedUserEmail = jwtTokenService.extractUserEmail(token);
+    public ProjectDto createProject(@RequestBody CreateProjectPayload payload,
+                                    @RequestHeader("Authorization") String authorizationHeader) {
+        String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
 
         return ProjectDto.from(
                 projectUseCases.createProject(payload.toCommand(connectedUserEmail))
@@ -46,6 +44,16 @@ public class ProjectController {
     public ProjectDto changeProjectDescription(@RequestBody ChangeProjectDescriptionPayload payload) {
         return ProjectDto.from(
                 projectUseCases.changeProjectDescription(payload.toCommand())
+        );
+    }
+
+    @PutMapping("/{projectId}/tasks")
+    public ProjectDto addTaskToProject(@PathVariable("projectId") String projectId,
+                                       @RequestBody AddTaskToProjectPayload payload,
+                                       @RequestHeader("Authorization") String authorizationHeader) {
+        String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
+        return ProjectDto.from(
+                projectUseCases.addTaskToProject(payload.toCommand(projectId, connectedUserEmail))
         );
     }
 }
