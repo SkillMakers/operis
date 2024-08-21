@@ -26,14 +26,14 @@ public class ProjectController {
         );
     }
 
-    @PutMapping("")
+    @PutMapping("/name")
     public ProjectDto changeProjectName(@RequestBody ChangeProjectNamePayload payload) {
         return ProjectDto.from(
                 projectUseCases.changeProjectName(payload.toCommand())
         );
     }
 
-    @PutMapping("")
+    @PutMapping("/description")
     public ProjectDto changeProjectDescription(@RequestBody ChangeProjectDescriptionPayload payload) {
         return ProjectDto.from(
                 projectUseCases.changeProjectDescription(payload.toCommand())

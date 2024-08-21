@@ -1,8 +1,9 @@
-package com.operis.project.core.service.adapter.out.persistence;
+package com.operis.project.core.service.adapter.out.persistence.project;
 
 import com.operis.project.core.application.project.model.Project;
 import com.operis.project.core.application.project.model.ProjectMember;
 import com.operis.project.core.application.project.model.ProjectOwner;
+import com.operis.project.core.service.adapter.out.persistence.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,10 +29,10 @@ public class ProjectEntity {
     private String description;
 
     @Column(nullable = false)
-    private String ownerId; //  e-mail de l'utilisateur propriétaire
+    private String ownerEmail;
 
     @ElementCollection
-    private List<String> memberIds = new ArrayList<>(); // Liste d'e-mails des membres
+    private List<String> membersEmails = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskEntity> tasks = new ArrayList<>();
@@ -62,12 +63,12 @@ public class ProjectEntity {
     public Project toDomain() {
         return new Project(
                 this.id,
-                new ProjectOwner(this.ownerId),
+                new ProjectOwner(this.ownerEmail),
                 this.name,
                 this.description,
                 this.createdAt,
                 this.tasks.stream().map(TaskEntity::toDomain).toList(),
-                this.memberIds.stream().map(ProjectMember::new).toList(),
+                this.membersEmails.stream().map(ProjectMember::new).toList(),
                 this.archived
         );
     }

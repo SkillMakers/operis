@@ -15,7 +15,6 @@ public record ProjectDto(
         String description,
         String owner, // owner email
         List<String> members, // members emails
-        boolean archived,
         List<TaskDto> tasks
 ) {
 
@@ -32,7 +31,6 @@ public record ProjectDto(
                 domain.description(),
                 domain.owner().userEmail(),
                 domain.members().stream().map(ProjectMember::getUserEmail).toList(),
-                domain.archived(),
                 domain.tasks().stream().map((ProjectTask task) -> TaskDto.from(task, domain.id())).toList()
 
         );

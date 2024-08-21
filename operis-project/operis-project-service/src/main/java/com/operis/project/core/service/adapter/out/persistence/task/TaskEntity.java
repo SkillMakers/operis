@@ -1,9 +1,10 @@
-package com.operis.project.core.service.adapter.out.persistence;
+package com.operis.project.core.service.adapter.out.persistence.task;
 
-import com.operis.project.core.application.TaskHistory;
 import com.operis.project.core.application.project.model.ProjectMember;
 import com.operis.project.core.application.project.model.ProjectTask;
+import com.operis.project.core.application.task.model.Task;
 import com.operis.project.core.application.task.model.TaskOwner;
+import com.operis.project.core.service.adapter.out.persistence.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,17 +31,17 @@ public class TaskEntity {
     private String description;
 
     @Column(nullable = false)
-    private String ownerId; // ID ou e-mail de l'utilisateur propriétaire
+    private String ownerEmail;
 
     @Column
-    private String assigneeId; // ID ou e-mail de l'utilisateur assigné (peut être null)
+    private String assigneeToEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatusEntity status;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TaskHistory> history = new ArrayList<>();
+    private List<TaskHistoryEntity> history = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
@@ -62,13 +63,27 @@ public class TaskEntity {
         );
     }
 
+    public static TaskEntity from(Task task) {
+        return new TaskEntity(
+                task.id(),
+                task.title(),
+                task.description(),
+                task.owner().userEmail(),
+                task.assignedTo(),
+                TaskStatusEntity.from(task.status()),
+                List.of(),
+                ProjectEntity.from(task.project()),
+                task.createdAt()
+        );
+    }
+
     public ProjectTask toDomain() {
         return new ProjectTask(
                 this.id,
                 this.title,
                 this.description,
-                new TaskOwner(this.ownerId),
-                new ProjectMember(this.assigneeId),
+                new TaskOwner(this.ownerEmail),
+                new ProjectMember(this.assigneeToEmail),
                 this.status.toDomain(),
                 this.createdAt
         );

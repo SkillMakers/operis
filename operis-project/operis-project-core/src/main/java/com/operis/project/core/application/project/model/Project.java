@@ -30,7 +30,7 @@ public record Project(
     }
 
     public Project(String id, ProjectOwner owner, String name, String description) {
-        this(id, owner, name, description, null, null, null, false);
+        this(id, owner, name, description, null, null, false);
     }
 
     public Project(Project project, boolean archived) {

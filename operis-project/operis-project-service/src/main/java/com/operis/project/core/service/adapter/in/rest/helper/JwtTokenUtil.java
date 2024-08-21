@@ -1,4 +1,4 @@
-package com.operis.util;
+package com.operis.project.core.service.adapter.in.rest.helper;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;

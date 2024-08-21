@@ -1,4 +1,4 @@
-package com.operis.project.core.application;
+package com.operis.project.core.service.adapter.out.persistence.task;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "task_history")
-public class TaskHistory {
+public class TaskHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class TaskHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    private TaskEntity task;
 
     @Column(nullable = false)
-    private TaskStatus status;
+    private TaskStatusEntity status;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;

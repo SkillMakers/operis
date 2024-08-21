@@ -1,4 +1,4 @@
-package com.operis.project.core.service.adapter.out.persistence;
+package com.operis.project.core.service.adapter.out.persistence.task;
 
 import com.operis.project.core.application.task.model.TaskStatus;
 

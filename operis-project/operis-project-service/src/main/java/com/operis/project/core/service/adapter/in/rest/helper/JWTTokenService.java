@@ -1,7 +1,6 @@
 package com.operis.project.core.service.adapter.in.rest.helper;
 
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.operis.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

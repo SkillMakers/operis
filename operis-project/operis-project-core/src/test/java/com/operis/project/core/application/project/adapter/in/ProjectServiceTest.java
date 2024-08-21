@@ -280,11 +280,11 @@ class ProjectServiceTest {
                             "222222",
                             "Create database migration script",
                             "Create database migration script for Operis project",
+                            project,
                             new TaskOwner("ronald.test@gmail.com"),
                             "ronald.test@gmail.com",
                             TaskStatus.TODO,
-                            LocalDateTime.now(),
-                            null
+                            LocalDateTime.now()
                     )
             );
 

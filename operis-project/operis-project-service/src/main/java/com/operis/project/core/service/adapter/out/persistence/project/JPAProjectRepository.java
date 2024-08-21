@@ -1,7 +1,8 @@
-package com.operis.project.core.service.adapter.out.persistence;
+package com.operis.project.core.service.adapter.out.persistence.project;
 
 import com.operis.project.core.application.project.model.Project;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class JPAProjectRepository implements ProjectRepository {
         return project;
     }
 
+    @Transactional
     @Override
     public Project changeProjectName(String projectId, String newName) {
         jpaProjectSpringDataRepository.changeProjectName(projectId, newName);
@@ -29,6 +31,7 @@ public class JPAProjectRepository implements ProjectRepository {
                 .orElseThrow(() -> new RuntimeException("Project not found"));
     }
 
+    @Transactional
     @Override
     public Project changeProjectDescription(String projectId, String newDescription) {
         jpaProjectSpringDataRepository.changeProjectDescription(projectId, newDescription);

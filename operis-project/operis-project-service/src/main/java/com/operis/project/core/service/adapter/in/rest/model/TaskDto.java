@@ -1,6 +1,5 @@
 package com.operis.project.core.service.adapter.in.rest.model;
 
-import com.operis.dto.TaskHistoryDto;
 import com.operis.project.core.application.project.model.ProjectTask;
 import com.operis.project.core.application.task.model.TaskStatus;
 

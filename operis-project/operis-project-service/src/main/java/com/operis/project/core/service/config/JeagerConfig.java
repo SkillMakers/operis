@@ -1,4 +1,4 @@
-package com.operis.config;
+package com.operis.project.core.service.config;
 
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,28 +1,30 @@
 package com.operis.project.core.application.task.model;
 
+import com.operis.project.core.application.project.model.Project;
+
 import java.time.LocalDateTime;
 
 public record Task(
         String id,
         String title,
         String description,
+        Project project,
         TaskOwner owner,
         String assignedTo,
         TaskStatus status,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime createdAt
 ) {
 
-    public Task(String id, String title, String description, TaskOwner owner, String assignedTo) {
+    public Task(String id, String title, String description, Project project, TaskOwner owner, String assignedTo) {
         this(
                 id,
                 title,
                 description,
+                project,
                 owner,
                 assignedTo,
                 TaskStatus.TODO,
-                LocalDateTime.now(),
-                null
+                LocalDateTime.now()
         );
     }
 }

@@ -28,24 +28,18 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project changeProjectName(ChangeProjectNameCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
-        Project updatedProject =
-                new Project(foundProject.id(), foundProject.owner(), command.newName(), foundProject.description());
-
-        return projectRepository.changeProjectName(updatedProject.id(), command.newName());
+        return projectRepository.changeProjectName(command.projectId(), command.newName());
     }
 
     @Override
     public Project changeProjectDescription(ChangeProjectDescriptionCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
-        Project updatedProject =
-                new Project(foundProject.id(), foundProject.owner(), foundProject.name(), command.newDescription());
-
-        return projectRepository.changeProjectDescription(updatedProject.id(), command.newDescription());
+        return projectRepository.changeProjectDescription(command.projectId(), command.newDescription());
     }
 
     @Override
@@ -71,7 +65,13 @@ public class ProjectService implements ProjectUseCases {
         Project foundProject = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
-        Task task = new Task(UUID.randomUUID().toString(), command.title(), command.description(), command.owner(), command.assignedTo().getUserEmail());
+        Task task = new Task(UUID.randomUUID().toString(),
+                command.title(),
+                command.description(),
+                foundProject,
+                command.owner(),
+                command.assignedTo().getUserEmail());
+
         foundProject.addTask(new ProjectTask(
                 task.id(),
                 task.title(),
@@ -79,8 +79,8 @@ public class ProjectService implements ProjectUseCases {
                 task.owner(),
                 command.assignedTo()
         ));
-        taskRepository.save(task);
 
+        taskRepository.save(task);
         return projectRepository.save(foundProject);
     }
 
