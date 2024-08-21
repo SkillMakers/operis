@@ -8,6 +8,7 @@ import com.operis.project.core.application.task.model.Task;
 import com.operis.project.core.application.task.port.out.persistence.TaskRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -24,6 +25,11 @@ public class ProjectService implements ProjectUseCases {
                         command.description()
                 )
         );
+    }
+
+    @Override
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
     }
 
     @Override

@@ -49,7 +49,8 @@ public class JPAProjectRepository implements ProjectRepository {
 
     @Override
     public List<Project> findAll() {
-        // FIXME
-        return List.of();
+        return jpaProjectSpringDataRepository.findAll().stream()
+                .map(ProjectEntity::toDomain)
+                .toList();
     }
 }

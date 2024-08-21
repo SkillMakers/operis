@@ -2,8 +2,12 @@ package com.operis.project.core.application.project.port.in;
 
 import com.operis.project.core.application.project.model.*;
 
+import java.util.List;
+
 public interface ProjectUseCases {
     Project createProject(CreateProjectCommand command);
+
+    List<Project> getAllProjects();
 
     Project changeProjectName(ChangeProjectNameCommand command);
 

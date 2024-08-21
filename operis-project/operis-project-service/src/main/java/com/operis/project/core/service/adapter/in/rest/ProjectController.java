@@ -9,6 +9,8 @@ import com.operis.project.core.service.adapter.in.rest.model.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/projects")
 @RequiredArgsConstructor
@@ -18,12 +20,19 @@ public class ProjectController {
     private final JWTTokenService jwtTokenService;
 
     @PostMapping("")
-    public ProjectDto create(@RequestBody CreateProjectPayload payload, @RequestHeader("Authorization") String token) {
+    public ProjectDto createProject(@RequestBody CreateProjectPayload payload, @RequestHeader("Authorization") String token) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(token);
 
         return ProjectDto.from(
                 projectUseCases.createProject(payload.toCommand(connectedUserEmail))
         );
+    }
+
+    @GetMapping("")
+    public List<ProjectDto> getAllProjects() {
+        return projectUseCases.getAllProjects().stream()
+                .map(ProjectDto::from)
+                .toList();
     }
 
     @PutMapping("/name")
