@@ -33,17 +33,21 @@ public class ProjectController {
                 .toList();
     }
 
-    @PutMapping("/name")
-    public ProjectDto changeProjectName(@RequestBody ChangeProjectNamePayload payload) {
+    @PutMapping("/{projectId}/name")
+    public ProjectDto changeProjectName(
+            @PathVariable("projectId") String projectId,
+            @RequestBody ChangeProjectNamePayload payload) {
         return ProjectDto.from(
-                projectUseCases.changeProjectName(payload.toCommand())
+                projectUseCases.changeProjectName(payload.toCommand(projectId))
         );
     }
 
-    @PutMapping("/description")
-    public ProjectDto changeProjectDescription(@RequestBody ChangeProjectDescriptionPayload payload) {
+    @PutMapping("/{projectId}/description")
+    public ProjectDto changeProjectDescription(
+            @PathVariable("projectId") String projectId,
+            @RequestBody ChangeProjectDescriptionPayload payload) {
         return ProjectDto.from(
-                projectUseCases.changeProjectDescription(payload.toCommand())
+                projectUseCases.changeProjectDescription(payload.toCommand(projectId))
         );
     }
 
