@@ -12,4 +12,6 @@ public interface UserProfileRepository {
     List<UserProfile> search(SearchCriteria criteria);
 
     Optional<UserProfile> findById(Long id);
+
+    List<UserProfile> findByEmailIn(List<String> emails);
 }

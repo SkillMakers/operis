@@ -3,11 +3,13 @@ package com.operis.project.core.application.project.adapter.in;
 import com.operis.project.core.application.project.model.*;
 import com.operis.project.core.application.project.model.exception.NotFoundException;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
+import com.operis.project.core.application.project.port.out.http.UserProfileClient;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
 import com.operis.project.core.application.task.model.Task;
 import com.operis.project.core.application.task.port.out.persistence.TaskRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class ProjectService implements ProjectUseCases {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final UserProfileClient userProfileClient;
 
     @Override
     public Project createProject(CreateProjectCommand command) {
@@ -61,6 +64,20 @@ public class ProjectService implements ProjectUseCases {
     public Project changeProjectMembers(ChangeProjectMembersCommand command) {
         Project foundProject = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
+
+        if (command.hasMembers()) {
+            List<String> projectMembersEmails = command.getMembersEmails();
+            List<Member> existingMembersUserAccounts = userProfileClient.find(new GetUserProfilesFromEmailsPayload(projectMembersEmails));
+            List<String> existingUserEmails = Member.getUserEmails(existingMembersUserAccounts);
+
+            List<String> difference = new ArrayList<>(projectMembersEmails);
+            difference.removeAll(existingUserEmails);
+
+            if (!difference.isEmpty()) {
+                throw new NotFoundException("Some members do not have an user account : %s"
+                        .formatted(difference));
+            }
+        }
 
         Project updatedProject = new Project(foundProject, command.members());
         return projectRepository.save(updatedProject);

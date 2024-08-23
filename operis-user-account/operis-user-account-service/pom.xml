@@ -46,7 +46,7 @@
 
         <dependency>
             <groupId>com.operis</groupId>
-            <artifactId>operis-user-model</artifactId>
+            <artifactId>operis-user-account-model</artifactId>
             <version>${operis.user.model.version}</version>
         </dependency>
 

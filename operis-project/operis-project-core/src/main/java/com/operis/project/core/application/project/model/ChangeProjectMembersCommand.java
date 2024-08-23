@@ -9,4 +9,14 @@ public record ChangeProjectMembersCommand(String projectId, List<ProjectMember> 
             throw new IllegalArgumentException("projectId must not be null");
         }
     }
+
+    public boolean hasMembers() {
+        return members != null && !members.isEmpty();
+    }
+
+    public List<String> getMembersEmails() {
+        return members != null
+                ? members.stream().map(ProjectMember::getUserEmail).toList()
+                : null;
+    }
 }

@@ -7,14 +7,15 @@ import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserAccountMapperTest {
 
     private final UserAccountMapper userAccountMapper = Mappers.getMapper(UserAccountMapper.class);
 
     @Test
-    void testToUserDTO() {
+    void testToUserAccountAccountDTO() {
         // Given
         User user = new User();
         user.setId(1L);
@@ -24,7 +25,7 @@ class UserAccountMapperTest {
         user.setUpdatedAt(LocalDateTime.now());
 
         // When
-        UserAccountDTO userAccountDTO = userAccountMapper.toUserDTO(user);
+        UserAccountDTO userAccountDTO = userAccountMapper.toUserAccountDTO(user);
 
         // Then
         assertNotNull(userAccountDTO);
@@ -36,7 +37,7 @@ class UserAccountMapperTest {
     }
 
     @Test
-    void testToUser() {
+    void testToUserAccount() {
         // Given
         UserAccountDTO userAccountDTO = new UserAccountDTO();
         userAccountDTO.setId(1L);
@@ -46,7 +47,7 @@ class UserAccountMapperTest {
         userAccountDTO.setUpdatedAt(LocalDateTime.now());
 
         // When
-        User user = userAccountMapper.toUser(userAccountDTO);
+        User user = userAccountMapper.toUserAccount(userAccountDTO);
 
         // Then
         assertNotNull(user);

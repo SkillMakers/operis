@@ -1,7 +1,7 @@
 package com.operis.mapper;
 
 import com.operis.dto.UserAccountDTO;
-import com.operis.model.User;
+import com.operis.model.UserAccount;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface UserAccountMapper {
 
     @Mapping(target = "password", ignore = true)
-    UserAccountDTO toUserDTO(User user);
+    UserAccountDTO toUserAccountDTO(UserAccount userAccount);
 
-    User toUser(UserAccountDTO userAccountDTO);
+    UserAccount toUserAccount(UserAccountDTO userAccountDTO);
 }

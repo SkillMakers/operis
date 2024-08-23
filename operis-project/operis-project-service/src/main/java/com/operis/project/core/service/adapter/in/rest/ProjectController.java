@@ -60,4 +60,12 @@ public class ProjectController {
                 projectUseCases.addTaskToProject(payload.toCommand(projectId, connectedUserEmail))
         );
     }
+
+    @PutMapping("/{projectId}/members")
+    public ProjectDto changeProjectMembers(@PathVariable("projectId") String projectId,
+                                           @RequestBody ChangeProjectMembersPayload payload) {
+        return ProjectDto.from(
+                projectUseCases.changeProjectMembers(payload.toCommand(projectId))
+        );
+    }
 }

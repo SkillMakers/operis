@@ -27,4 +27,8 @@ public class UserProfileService implements UserProfileUseCases {
     public List<UserProfile> search(SearchCriteria searchCriteria) {
         return userProfileRepository.search(searchCriteria);
     }
+
+    public List<UserProfile> findByEmails(List<String> emails) {
+        return userProfileRepository.findByEmailIn(emails);
+    }
 }

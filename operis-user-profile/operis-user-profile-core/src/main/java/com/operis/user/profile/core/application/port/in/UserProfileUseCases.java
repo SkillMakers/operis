@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface UserProfileUseCases {
     UserProfile save(UserProfile userProfile);
+
     List<UserProfile> search(SearchCriteria searchCriteria);
+
+    List<UserProfile> findByEmails(List<String> userProfilesEmails);
 }

@@ -11,5 +11,7 @@ import java.util.List;
 public interface JPAUserProfileSpringDataRepository extends JpaRepository<UserProfileEntity, Long> {
 
     @Query("SELECT p FROM UserProfileEntity p WHERE p.firstName LIKE %:query% OR p.lastName LIKE %:query%")
-    List<UserProfileEntity> findByFirstNameOrLastName(@Param("query")  String query);
+    List<UserProfileEntity> findByFirstNameOrLastName(@Param("query") String query);
+
+    List<UserProfileEntity> findByEmailIn(List<String> emails);
 }

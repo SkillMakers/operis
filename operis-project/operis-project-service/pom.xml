@@ -136,7 +136,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>com.operis.OperisTaskServiceApplication</mainClass>
+                            <mainClass>com.operis.ProjectServiceApplication</mainClass>
                             <layout>JAR</layout>
                         </configuration>
                     </plugin>

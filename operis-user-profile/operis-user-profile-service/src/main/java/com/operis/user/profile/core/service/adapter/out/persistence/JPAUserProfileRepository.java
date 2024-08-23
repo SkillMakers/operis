@@ -37,4 +37,11 @@ public class JPAUserProfileRepository implements UserProfileRepository {
         return jpaUserProfileSpringDataRepository.findById(id)
                 .map(userProfileEntityMapper::toDomain);
     }
+
+    @Override
+    public List<UserProfile> findByEmailIn(List<String> emails) {
+        return userProfileEntityMapper.toDomain(
+                jpaUserProfileSpringDataRepository.findByEmailIn(emails)
+        );
+    }
 }

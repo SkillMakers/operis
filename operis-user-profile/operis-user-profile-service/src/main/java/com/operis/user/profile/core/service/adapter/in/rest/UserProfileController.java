@@ -4,6 +4,7 @@ import com.operis.user.profile.core.application.port.in.UserProfileUseCases;
 import com.operis.user.profile.core.service.adapter.in.rest.mappers.SearchCriteriaMapper;
 import com.operis.user.profile.core.service.adapter.in.rest.mappers.UserProfileMapper;
 import com.operis.user.profile.core.service.adapter.in.rest.model.CreateUserProfilePayload;
+import com.operis.user.profile.core.service.adapter.in.rest.model.GetUserProfilesFromEmailsPayload;
 import com.operis.user.profile.core.service.adapter.in.rest.model.UpdateUserProfilePayload;
 import com.operis.user.profile.core.service.adapter.in.rest.model.UserProfileDto;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,15 @@ public class UserProfileController {
         return userProfileMapper.toDto(
                 userProfileUseCases.search(searchCriteriaMapper.from(query))
         );
+    }
+
+    @PostMapping("/find")
+    public ResponseEntity<List<UserProfileDto>> getUserProfilesFromEmails(
+            @RequestBody GetUserProfilesFromEmailsPayload payload) {
+        List<UserProfileDto> userProfileDTO = userProfileMapper.toDto(
+                userProfileUseCases.findByEmails(payload.userProfilesEmails())
+        );
+
+        return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
     }
 }
