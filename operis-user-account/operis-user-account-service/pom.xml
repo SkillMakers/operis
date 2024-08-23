@@ -187,7 +187,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>com.operis.OperisUserAccountServiceApplication</mainClass>
+                            <mainClass>com.operis.UserAccountServiceApplication</mainClass>
                             <layout>JAR</layout>
                         </configuration>
                     </plugin>

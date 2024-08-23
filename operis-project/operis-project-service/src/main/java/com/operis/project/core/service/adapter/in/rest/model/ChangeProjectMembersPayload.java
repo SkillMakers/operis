@@ -3,10 +3,10 @@ package com.operis.project.core.service.adapter.in.rest.model;
 import com.operis.project.core.application.project.model.ChangeProjectMembersCommand;
 import com.operis.project.core.application.project.model.ProjectMember;
 
-import java.util.List;
+import java.util.Set;
 
 public record ChangeProjectMembersPayload(
-        List<String> membersEmails
+        Set<String> membersEmails
 ) {
 
     public ChangeProjectMembersCommand toCommand(String projectId) {

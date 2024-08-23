@@ -2,6 +2,7 @@ package com.operis.project.core.application.project.model;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -10,5 +11,11 @@ public final class ProjectMember {
 
     public ProjectMember(String userEmail) {
         this.userEmail = Objects.requireNonNull(userEmail, "userEmail must not be null");
+    }
+
+    public static List<String> getUserEmails(List<ProjectMember> projectMembers) {
+        return projectMembers != null
+                ? projectMembers.stream().map(ProjectMember::getUserEmail).toList()
+                : null;
     }
 }

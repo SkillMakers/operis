@@ -1,6 +1,7 @@
 package com.operis.project.core.service.adapter.out.persistence.project;
 
 import com.operis.project.core.application.project.model.Project;
+import com.operis.project.core.application.project.model.ProjectMember;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,19 @@ public class JPAProjectRepository implements ProjectRepository {
         return jpaProjectSpringDataRepository.findById(projectId)
                 .map(ProjectEntity::toDomain)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
+    }
+
+    @Override
+    public Project changeProjectMembers(String projectId, List<ProjectMember> projectMembers) {
+        ProjectEntity projectEntity = jpaProjectSpringDataRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        projectEntity.getMembersEmails().clear();
+        projectEntity.getMembersEmails().addAll(ProjectMember.getUserEmails(projectMembers));
+
+        jpaProjectSpringDataRepository.save(projectEntity);
+
+        return projectEntity.toDomain();
     }
 
     @Override

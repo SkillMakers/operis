@@ -47,9 +47,10 @@ public record Project(
                 project.description(),
                 project.createdAt(),
                 project.tasks(),
-                Stream.concat(
-                        Objects.requireNonNull(members, "members must not be null")
-                                .stream(), Stream.of(new ProjectMember(project.owner.userEmail()))).toList(),
+                Stream.concat(Objects.requireNonNull(members, "members must not be null").stream(),
+                                Stream.of(new ProjectMember(project.owner.userEmail())))
+                        .distinct()
+                        .toList(),
                 false);
     }
 

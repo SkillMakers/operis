@@ -80,7 +80,7 @@ public class ProjectService implements ProjectUseCases {
         }
 
         Project updatedProject = new Project(foundProject, command.members());
-        return projectRepository.save(updatedProject);
+        return projectRepository.changeProjectMembers(command.projectId(), updatedProject.members());
     }
 
     @Override

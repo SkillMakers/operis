@@ -1,14 +1,13 @@
 package com.operis.mapper;
 
 import com.operis.dto.UserAccountDTO;
-import com.operis.model.User;
+import com.operis.model.UserAccount;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserAccountMapperTest {
 
@@ -17,23 +16,23 @@ class UserAccountMapperTest {
     @Test
     void testToUserAccountAccountDTO() {
         // Given
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("test@example.com");
-        user.setPassword("password");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
+        UserAccount userAccount = new UserAccount();
+        userAccount.setId(1L);
+        userAccount.setEmail("test@example.com");
+        userAccount.setPassword("password");
+        userAccount.setCreatedAt(LocalDateTime.now());
+        userAccount.setUpdatedAt(LocalDateTime.now());
 
         // When
-        UserAccountDTO userAccountDTO = userAccountMapper.toUserAccountDTO(user);
+        UserAccountDTO userAccountDTO = userAccountMapper.toUserAccountDTO(userAccount);
 
         // Then
         assertNotNull(userAccountDTO);
-        assertEquals(user.getId(), userAccountDTO.getId());
-        assertEquals(user.getEmail(), userAccountDTO.getEmail());
+        assertEquals(userAccount.getId(), userAccountDTO.getId());
+        assertEquals(userAccount.getEmail(), userAccountDTO.getEmail());
         assertNull(userAccountDTO.getPassword());
-        assertEquals(user.getCreatedAt(), userAccountDTO.getCreatedAt());
-        assertEquals(user.getUpdatedAt(), userAccountDTO.getUpdatedAt());
+        assertEquals(userAccount.getCreatedAt(), userAccountDTO.getCreatedAt());
+        assertEquals(userAccount.getUpdatedAt(), userAccountDTO.getUpdatedAt());
     }
 
     @Test
@@ -47,14 +46,14 @@ class UserAccountMapperTest {
         userAccountDTO.setUpdatedAt(LocalDateTime.now());
 
         // When
-        User user = userAccountMapper.toUserAccount(userAccountDTO);
+        UserAccount userAccount = userAccountMapper.toUserAccount(userAccountDTO);
 
         // Then
-        assertNotNull(user);
-        assertEquals(userAccountDTO.getId(), user.getId());
-        assertEquals(userAccountDTO.getEmail(), user.getEmail());
-        assertEquals(userAccountDTO.getPassword(), user.getPassword());
-        assertEquals(userAccountDTO.getCreatedAt(), user.getCreatedAt());
-        assertEquals(userAccountDTO.getUpdatedAt(), user.getUpdatedAt());
+        assertNotNull(userAccount);
+        assertEquals(userAccountDTO.getId(), userAccount.getId());
+        assertEquals(userAccountDTO.getEmail(), userAccount.getEmail());
+        assertEquals(userAccountDTO.getPassword(), userAccount.getPassword());
+        assertEquals(userAccountDTO.getCreatedAt(), userAccount.getCreatedAt());
+        assertEquals(userAccountDTO.getUpdatedAt(), userAccount.getUpdatedAt());
     }
 }
