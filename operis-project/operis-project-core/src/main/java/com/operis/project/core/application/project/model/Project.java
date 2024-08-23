@@ -68,6 +68,10 @@ public record Project(
                 false);
     }
 
+    public boolean isMember(ProjectMember member) {
+        return members.contains(member);
+    }
+
     public void addTask(ProjectTask task) {
         if (!members.contains(task.assignedTo())) {
             throw new IllegalArgumentException("Task cannot be assigned to a non-member");

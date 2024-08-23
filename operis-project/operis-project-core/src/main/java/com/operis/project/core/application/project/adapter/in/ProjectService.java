@@ -94,6 +94,10 @@ public class ProjectService implements ProjectUseCases {
                 command.owner(),
                 command.assignedTo().getUserEmail());
 
+        if (!foundProject.isMember(new ProjectMember(task.assignedTo()))) {
+            throw new IllegalArgumentException("Task cannot be assigned to a non-member");
+        }
+
         taskRepository.save(task);
 
         return foundProject.copyAppendingTask(new ProjectTask(

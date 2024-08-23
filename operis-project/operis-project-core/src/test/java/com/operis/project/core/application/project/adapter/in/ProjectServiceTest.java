@@ -2,6 +2,7 @@ package com.operis.project.core.application.project.adapter.in;
 
 import com.operis.project.core.application.project.model.*;
 import com.operis.project.core.application.project.model.exception.NotFoundException;
+import com.operis.project.core.application.project.port.out.http.UserProfileClient;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
 import com.operis.project.core.application.task.model.Task;
 import com.operis.project.core.application.task.model.TaskOwner;
@@ -15,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +29,9 @@ class ProjectServiceTest {
 
     @Mock
     private ProjectRepository projectRepository;
+
+    @Mock
+    private UserProfileClient userProfileClient;
 
     @Mock
     private TaskRepository taskRepository;
@@ -170,10 +173,7 @@ class ProjectServiceTest {
             projectService.archiveProject(new DeleteProjectCommand("123456"));
 
             // Then
-            ArgumentCaptor<Project> projectArgumentCaptor = ArgumentCaptor.forClass(Project.class);
-            verify(projectRepository).save(projectArgumentCaptor.capture());
-            Project projectArgument = projectArgumentCaptor.getValue();
-            assertTrue(projectArgument.archived());
+            verify(projectRepository).archiveProject(eq(project.id()));
         }
 
         @Test
@@ -209,19 +209,20 @@ class ProjectServiceTest {
             );
 
             when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(userProfileClient.find(any())).thenReturn(List.of(
+                    new Member("imad.test@gmail.com", "Imad", "Test"),
+                    new Member("charles.test@gmail.com", "Charles", "Test")
+            ));
 
             // When
             projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, projectMembers));
 
             // Then
-            ArgumentCaptor<Project> projectArgumentCaptor = ArgumentCaptor.forClass(Project.class);
-            verify(projectRepository).save(projectArgumentCaptor.capture());
-            Project projectArgument = projectArgumentCaptor.getValue();
-            assertThat(projectArgument.members()).containsExactlyInAnyOrder(
-                    new ProjectMember("ronald.test@gmail.com"),
+            verify(projectRepository).changeProjectMembers(eq(projectId), eq(List.of(
                     new ProjectMember("imad.test@gmail.com"),
-                    new ProjectMember("charles.test@gmail.com")
-            );
+                    new ProjectMember("charles.test@gmail.com"),
+                    new ProjectMember("ronald.test@gmail.com"))
+            ));
         }
 
         @Test
@@ -276,17 +277,6 @@ class ProjectServiceTest {
             );
 
             when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-            when(taskRepository.save(any())).thenReturn(new Task(
-                            "222222",
-                            "Create database migration script",
-                            "Create database migration script for Operis project",
-                            project,
-                            new TaskOwner("ronald.test@gmail.com"),
-                            "ronald.test@gmail.com",
-                            TaskStatus.TODO,
-                            LocalDateTime.now()
-                    )
-            );
 
             // When
             projectService.addTaskToProject(new AddTaskCommand(
@@ -298,18 +288,16 @@ class ProjectServiceTest {
             ));
 
             // Then
-            ArgumentCaptor<Project> projectArgumentCaptor = ArgumentCaptor.forClass(Project.class);
-            verify(projectRepository).save(projectArgumentCaptor.capture());
-            Project projectArgument = projectArgumentCaptor.getValue();
-            assertThat(projectArgument.tasks()).hasSize(1);
-            ProjectTask projectTask = projectArgument.tasks().get(0);
-            assertThat(projectTask.id()).isNotNull();
-            assertThat(projectTask.title()).isEqualTo("Create database migration script");
-            assertThat(projectTask.description()).isEqualTo("Create database migration script for Operis project");
-            assertThat(projectTask.owner().userEmail()).isEqualTo("ronald.test@gmail.com");
-            assertThat(projectTask.assignedTo().getUserEmail()).isEqualTo("ronald.test@gmail.com");
-            assertThat(projectTask.status()).isEqualTo(TaskStatus.TODO);
-            assertThat(projectTask.createdAt()).isNotNull();
+            ArgumentCaptor<Task> projectArgumentCaptor = ArgumentCaptor.forClass(Task.class);
+            verify(taskRepository).save(projectArgumentCaptor.capture());
+            Task projectArgument = projectArgumentCaptor.getValue();
+            assertThat(projectArgument.id()).isNotNull();
+            assertThat(projectArgument.title()).isEqualTo("Create database migration script");
+            assertThat(projectArgument.description()).isEqualTo("Create database migration script for Operis project");
+            assertThat(projectArgument.owner().userEmail()).isEqualTo("ronald.test@gmail.com");
+            assertThat(projectArgument.assignedTo()).isEqualTo("ronald.test@gmail.com");
+            assertThat(projectArgument.status()).isEqualTo(TaskStatus.TODO);
+            assertThat(projectArgument.createdAt()).isNotNull();
         }
 
         @Test
@@ -332,7 +320,7 @@ class ProjectServiceTest {
                             projectId,
                             "Create database migration script",
                             "Create database migration script for Operis project",
-                            new TaskOwner("imad.test@gmail.com"),
+                            new TaskOwner("ronald.test@gmail.com"),
                             new ProjectMember("imad.test@gmail.com")
                     )));
 
