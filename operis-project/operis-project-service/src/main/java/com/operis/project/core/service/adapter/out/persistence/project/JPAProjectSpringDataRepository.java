@@ -17,5 +17,7 @@ public interface JPAProjectSpringDataRepository extends JpaRepository<ProjectEnt
     @Query("update ProjectEntity p set p.description = :newDescription where p.id = :projectId")
     void changeProjectDescription(@QueryParam("projectId") String projectId, @QueryParam("newDescription") String newDescription);
 
-
+    @Modifying(clearAutomatically = true)
+    @Query("update ProjectEntity p set p.archived = true where p.id = :projectId")
+    void archiveProject(String projectId);
 }

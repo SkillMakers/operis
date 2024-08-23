@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: operis-task-service
+    name: operis-project-service
   config:
     import: optional:configserver:http://localhost:8888
 

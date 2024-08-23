@@ -15,6 +15,8 @@ public interface ProjectRepository {
 
     Project changeProjectMembers(String projectId, List<ProjectMember> projectMembers);
 
+    void archiveProject(String projectId);
+
     Optional<Project> findById(String id);
 
     List<Project> findAll();

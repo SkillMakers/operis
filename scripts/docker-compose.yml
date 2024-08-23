@@ -51,18 +51,18 @@ services:
     ports:
       - "8083:8083" # Optional, for local access
 
-  task-service:
-    image: ibouakl/operis-task-service:1.0-SNAPSHOT
-    container_name: operis-task-service
+  project-service:
+    image: ibouakl/operis-project-service:1.0-SNAPSHOT
+    container_name: operis-project-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://taskdb:3306/operis-task
+      SPRING_DATASOURCE_URL: jdbc:mysql://projectdb:3306/operis-project
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
     depends_on:
       - eureka
-      - taskdb
+      - projectdb
       - config-server
 
   gateway:
@@ -77,7 +77,7 @@ services:
     depends_on:
       - eureka
       - user-account-service
-      - task-service
+      - project-service
       - config-server
 
   useraccountdb:
@@ -93,18 +93,18 @@ services:
     volumes:
       - useraccountdb-data:/var/lib/mysql
 
-  taskdb:
+  projectdb:
     image: mysql:latest
-    container_name: taskdb
+    container_name: projectdb
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: operis-task
+      MYSQL_DATABASE: operis-project
     ports:
       - "3308:3306"  # Optional, for local access
     networks:
       - mynetwork
     volumes:
-      - taskdb-data:/var/lib/mysql
+      - projectdb-data:/var/lib/mysql
 
   userprofiledb:
     image: mysql:latest
@@ -137,5 +137,5 @@ networks:
 
 volumes:
   useraccountdb-data:
-  taskdb-data:
+  projectdb-data:
   userprofiledb-data:

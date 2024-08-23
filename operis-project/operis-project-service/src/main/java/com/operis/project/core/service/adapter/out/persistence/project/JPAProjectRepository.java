@@ -56,6 +56,11 @@ public class JPAProjectRepository implements ProjectRepository {
     }
 
     @Override
+    public void archiveProject(String projectId) {
+        jpaProjectSpringDataRepository.archiveProject(projectId);
+    }
+
+    @Override
     public Optional<Project> findById(String id) {
         return jpaProjectSpringDataRepository.findById(id)
                 .map(ProjectEntity::toDomain);

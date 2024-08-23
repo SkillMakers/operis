@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: operis-task-service
+    name: operis-project-service
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -30,7 +30,7 @@ management:
       endpoint:
 
 tracing:
-  url:  http://localhost:4317
+  url: http://localhost:4317
 
 code:
   secret: mAvsZD2KqE2Kv6VpF+VkN1P3PT+2uq5z0g2ZxF0StSc=

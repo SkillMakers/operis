@@ -14,12 +14,12 @@ spring:
             - Path=/api/users/**, /api/auth/login
           filters:
             - AddRequestHeader=User-Request, Gateway
-        - id: task-service
-          uri: lb://operis-task-service
+        - id: project-service
+          uri: lb://operis-project-service
           predicates:
             - Path=/api/tasks/**,/api/projects/**
           filters:
-            - AddRequestHeader=Order-Request, Gateway
+            - AddRequestHeader=Project-Request, Gateway
 management:
   tracing:
     sampling:

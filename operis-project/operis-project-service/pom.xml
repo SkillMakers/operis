@@ -15,7 +15,7 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <operis.task.model.version>1.0-SNAPSHOT</operis.task.model.version>
+        <operis.project.core.version>1.0-SNAPSHOT</operis.project.core.version>
     </properties>
 
     <dependencies>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.operis</groupId>
             <artifactId>operis-project-core</artifactId>
-            <version>${operis.task.model.version}</version>
+            <version>${operis.project.core.version}</version>
         </dependency>
 
         <dependency>

@@ -53,11 +53,10 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public void archiveProject(DeleteProjectCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
-        Project updatedProject = new Project(foundProject, true);
-        projectRepository.save(updatedProject);
+        projectRepository.archiveProject(command.projectId());
     }
 
     @Override

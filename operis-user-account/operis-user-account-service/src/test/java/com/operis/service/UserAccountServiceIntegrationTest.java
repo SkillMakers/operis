@@ -1,8 +1,8 @@
 package com.operis.service;
 
 import com.operis.dto.UserAccountDTO;
-import com.operis.model.User;
-import com.operis.repository.UserRepository;
+import com.operis.model.UserAccount;
+import com.operis.repository.UserAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class UserAccountServiceIntegrationTest {
     private UserAccountService userAccountService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserAccountRepository userAccountRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setup() {
-        userRepository.deleteAll();
+        userAccountRepository.deleteAll();
     }
 
     @Test
@@ -45,7 +45,7 @@ public class UserAccountServiceIntegrationTest {
         assertThat(createdUserAccountDTO.getId()).isNotNull();
 
         // Check if user is saved in repository
-        User savedUser = userRepository.findById(createdUserAccountDTO.getId()).orElse(null);
+        UserAccount savedUser = userAccountRepository.findById(createdUserAccountDTO.getId()).orElse(null);
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getEmail()).isEqualTo(userAccountDTO.getEmail());
         assertThat(passwordEncoder.matches(userAccountDTO.getPassword(), savedUser.getPassword())).isTrue();

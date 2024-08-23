@@ -1,5 +1,6 @@
 package com.operis.project.core.service.adapter.in.rest;
 
+import com.operis.project.core.application.project.model.DeleteProjectCommand;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
@@ -67,5 +68,10 @@ public class ProjectController {
         return ProjectDto.from(
                 projectUseCases.changeProjectMembers(payload.toCommand(projectId))
         );
+    }
+
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(@PathVariable("projectId") String projectId) {
+        projectUseCases.archiveProject(new DeleteProjectCommand(projectId));
     }
 }
