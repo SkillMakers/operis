@@ -55,6 +55,7 @@ public class JPAProjectRepository implements ProjectRepository {
         return projectEntity.toDomain();
     }
 
+    @Transactional
     @Override
     public void archiveProject(String projectId) {
         jpaProjectSpringDataRepository.archiveProject(projectId);
