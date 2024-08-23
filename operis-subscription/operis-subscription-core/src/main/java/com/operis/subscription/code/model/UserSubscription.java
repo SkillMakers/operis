@@ -1,16 +1,20 @@
 package com.operis.subscription.code.model;
 
+import com.operis.subscription.code.model.utils.ValidatorUtils;
+
 import java.util.Objects;
 
 public record UserSubscription(
-        Long id,
+        String id,
         String userEMail,
         Subscription subscription
 ) {
 
-    public UserSubscription(String userEMail, Subscription subscription) {
-        this(null,
-                Objects.requireNonNull(userEMail, "User email cannot be null"),
-                Objects.requireNonNull(subscription, "Subscription name cannot be null"));
+    public UserSubscription(String id, String userEMail, Subscription subscription) {
+        this.id = ValidatorUtils.validateNonEmpty(id, "ID cannot be null or empty");
+        this.userEMail = ValidatorUtils.validateNonEmpty(userEMail, "User mail cannot be null or empty");
+        this.subscription = Objects.requireNonNull(subscription, "The list of features cannot be null");
+
     }
+
 }
