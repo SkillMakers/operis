@@ -1,10 +1,12 @@
 # OPERIS packages structure
 
-We chose the Hexagonal Architecture for structuring our microservices because it promotes a clear separation of concerns, enhances modularity and testability, and allows for greater flexibility in adapting to changing technologies and requirements. Here are the key principles of this architecture:
+We chose the Hexagonal Architecture for structuring our microservices because it promotes a clear separation of concerns, enhances modularity and testability, and allows for greater
+flexibility in adapting to changing technologies and requirements. Here are the key principles of this architecture:
 
 ## Hexagonal Architecture Overview
 
-Hexagonal Architecture, also known as the Ports and Adapters pattern, is a software design pattern that aims to create maintainable, testable, and flexible applications. It achieves this by isolating the core business logic from external concerns, promoting a clean separation of concerns.
+Hexagonal Architecture, also known as the Ports and Adapters pattern, is a software design pattern that aims to create maintainable, testable, and flexible applications. It achieves this by
+isolating the core business logic from external concerns, promoting a clean separation of concerns.
 
 ### Key Concepts
 
@@ -18,16 +20,45 @@ Hexagonal Architecture, also known as the Ports and Adapters pattern, is a softw
     - **Inbound Ports**: Define how external actors (e.g., users, other systems) can interact with the application's core.
     - **Outbound Ports**: Define how the application communicates with external systems (e.g., databases, message queues).
 
-#### 3.  Adapters
+#### 3. Adapters
 
 - Adapters implement the interfaces defined by the ports, allowing the application to interact with external systems.
     - **Primary Adapters**: Handle requests coming into the application (e.g., REST controllers, CLI commands).
     - **Secondary Adapters**: Handle outgoing interactions with external systems (e.g., database repositories, external API clients).
 
-> Each business microservices will be divided into two modules: 
+> Each business microservices will be divided into two modules:
 >
->- the first module, suffixed with '-core' (e.g., user-profile-core), will encapsulate the domain logic, 
+>- the first module, suffixed with '-core' (e.g., user-profile-core), will encapsulate the domain logic,
 >- the second module, suffixed with '-service' (e.g., user-profile-service), will implement the adapters and configure the Spring Boot application.
 
+# Build docker images
 
+To build docker images for all services, run the following command in the root directory:
 
+```
+mvn clean install -DskipTests -P docker
+```
+
+# Run docker compose services
+
+To run all services using docker-compose, run the following command in the **/scripts** directory:
+
+```
+docker-compose up -d
+```
+
+ℹ️ The -d option runs the containers in the background
+
+To stop all services, run the following command in the **/scripts** directory:
+
+``` 
+docker-compose stop
+```
+
+To run a specific service, run the following command in the **/scripts** directory:
+
+```
+docker-compose up -d <service-name>
+```
+
+ℹ️ For example, user-profile-service or eureka
