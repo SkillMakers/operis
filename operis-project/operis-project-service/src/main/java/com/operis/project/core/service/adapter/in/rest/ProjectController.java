@@ -5,6 +5,8 @@ import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +20,15 @@ public class ProjectController {
     private final JWTTokenService jwtTokenService;
 
     @PostMapping("")
-    public ProjectDto createProject(@RequestBody CreateProjectPayload payload,
-                                    @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<ProjectDto> createProject(@RequestBody CreateProjectPayload payload,
+                                                    @RequestHeader("Authorization") String authorizationHeader) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
 
-        return ProjectDto.from(
+        var projectDto = ProjectDto.from(
                 projectUseCases.createProject(payload.toCommand(connectedUserEmail))
         );
+
+        return new ResponseEntity<>(projectDto, HttpStatus.CREATED);
     }
 
     @GetMapping("")
