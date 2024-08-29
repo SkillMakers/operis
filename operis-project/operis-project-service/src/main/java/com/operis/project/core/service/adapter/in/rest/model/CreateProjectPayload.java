@@ -5,8 +5,7 @@ import com.operis.project.core.application.project.model.ProjectOwner;
 
 public record CreateProjectPayload(
         String name,
-        String description,
-        String assignedTo
+        String description
 ) {
     public CreateProjectCommand toCommand(String connectedUserEmail) {
         return new CreateProjectCommand(
