@@ -1,6 +1,7 @@
 package com.operis.project.core.service.adapter.out.persistence.project;
 
 import com.operis.project.core.application.project.model.Project;
+import com.operis.project.core.application.project.model.ProjectCriteria;
 import com.operis.project.core.application.project.model.ProjectMember;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
 import jakarta.transaction.Transactional;
@@ -68,8 +69,9 @@ public class JPAProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public List<Project> findAll() {
+    public List<Project> findAll(ProjectCriteria criteria) {
         return jpaProjectSpringDataRepository.findAll().stream()
+                .filter(entity -> entity.isArchived() == criteria.archived())
                 .map(ProjectEntity::toDomain)
                 .toList();
     }

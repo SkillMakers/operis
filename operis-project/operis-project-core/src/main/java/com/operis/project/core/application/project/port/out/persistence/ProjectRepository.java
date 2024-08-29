@@ -1,6 +1,7 @@
 package com.operis.project.core.application.project.port.out.persistence;
 
 import com.operis.project.core.application.project.model.Project;
+import com.operis.project.core.application.project.model.ProjectCriteria;
 import com.operis.project.core.application.project.model.ProjectMember;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface ProjectRepository {
 
     Optional<Project> findById(String id);
 
-    List<Project> findAll();
+    List<Project> findAll(ProjectCriteria criteria);
 }

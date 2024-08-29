@@ -32,7 +32,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+        return projectRepository.findAll(new ProjectCriteria(false));
     }
 
     @Override
