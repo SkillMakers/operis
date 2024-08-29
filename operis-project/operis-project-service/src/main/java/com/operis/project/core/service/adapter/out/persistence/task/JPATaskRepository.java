@@ -13,7 +13,7 @@ public class JPATaskRepository implements TaskRepository {
     @Override
     public Task save(Task task) {
         TaskEntity taskEntity = TaskEntity.from(task);
-        jpaTaskSpringDataRepository.save(taskEntity).toDomain();
+        jpaTaskSpringDataRepository.save(taskEntity);
         return task;
     }
 

@@ -1,1 +1,9 @@
-spring.application.name=operis-subscription-service
+server:
+  port: 8084
+
+spring:
+  application:
+    name: operis-subscription-service
+  config:
+    import: optional:configserver:http://localhost:8888
+

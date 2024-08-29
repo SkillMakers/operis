@@ -9,10 +9,10 @@ public record Subscription(
         String id,
         String name,
         String description,
-        List<Features> features
+        List<Feature> features
 ) {
 
-    public Subscription(String id, String name, String description, List<Features> features) {
+    public Subscription(String id, String name, String description, List<Feature> features) {
         this.id = ValidatorUtils.validateNonEmpty(id, "ID cannot be null");
         this.name = ValidatorUtils.validateNonEmpty(name, "Name cannot be null");
         this.description = ValidatorUtils.validateNonEmpty(description, "Description cannot be null");
