@@ -17,7 +17,7 @@ public interface ProjectUseCases {
 
     Project changeProjectMembers(ChangeProjectMembersCommand command);
 
-    Project addTaskToProject(AddTaskCommand command);
+    Project addTaskToProject(AddTaskToProjectCommand command);
 
     Project removeTaskFromProject(RemoveTaskCommand command);
 

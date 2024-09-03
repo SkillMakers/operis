@@ -279,7 +279,7 @@ class ProjectServiceTest {
             when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
 
             // When
-            projectService.addTaskToProject(new AddTaskCommand(
+            projectService.addTaskToProject(new AddTaskToProjectCommand(
                     projectId,
                     "Create database migration script",
                     "Create database migration script for Operis project",
@@ -316,7 +316,7 @@ class ProjectServiceTest {
             // When
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> projectService.addTaskToProject(new AddTaskCommand(
+                    () -> projectService.addTaskToProject(new AddTaskToProjectCommand(
                             projectId,
                             "Create database migration script",
                             "Create database migration script for Operis project",
@@ -340,7 +340,7 @@ class ProjectServiceTest {
             assertThrows(
                     NotFoundException.class,
                     () -> projectService.addTaskToProject(
-                            new AddTaskCommand(
+                            new AddTaskToProjectCommand(
                                     projectId,
                                     "Create database migration script",
                                     "Create database migration script for Operis project",
@@ -399,7 +399,7 @@ class ProjectServiceTest {
             assertThrows(
                     NotFoundException.class,
                     () -> projectService.addTaskToProject(
-                            new AddTaskCommand(
+                            new AddTaskToProjectCommand(
                                     projectId,
                                     "Create database migration script",
                                     "Create database migration script for Operis project",

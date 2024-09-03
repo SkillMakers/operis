@@ -83,7 +83,7 @@ public class ProjectService implements ProjectUseCases {
     }
 
     @Override
-    public Project addTaskToProject(AddTaskCommand command) {
+    public Project addTaskToProject(AddTaskToProjectCommand command) {
         Project foundProject = projectRepository.findById(command.projectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 

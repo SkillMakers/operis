@@ -2,8 +2,8 @@ package com.operis.project.core.application.project.model;
 
 import com.operis.project.core.application.task.model.TaskOwner;
 
-public record AddTaskCommand(String projectId, String title, String description, TaskOwner owner, ProjectMember assignedTo) {
-    public AddTaskCommand {
+public record AddTaskToProjectCommand(String projectId, String title, String description, TaskOwner owner, ProjectMember assignedTo) {
+    public AddTaskToProjectCommand {
         if (projectId == null) {
             throw new IllegalArgumentException("projectId must not be null");
         }

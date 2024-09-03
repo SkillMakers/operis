@@ -1,6 +1,6 @@
 package com.operis.project.core.service.adapter.in.rest.model;
 
-import com.operis.project.core.application.project.model.AddTaskCommand;
+import com.operis.project.core.application.project.model.AddTaskToProjectCommand;
 import com.operis.project.core.application.project.model.ProjectMember;
 import com.operis.project.core.application.task.model.TaskOwner;
 
@@ -10,8 +10,8 @@ public record AddTaskToProjectPayload(
         String assignedToEmail
 ) {
 
-    public AddTaskCommand toCommand(String projectId, String ownerEmail) {
-        return new AddTaskCommand(projectId,
+    public AddTaskToProjectCommand toCommand(String projectId, String ownerEmail) {
+        return new AddTaskToProjectCommand(projectId,
                 title(),
                 description(),
                 new TaskOwner(ownerEmail),
