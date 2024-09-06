@@ -5,4 +5,6 @@ import com.operis.subscription.code.model.Subscription;
 public interface SubscriptionRepository {
 
     Subscription save(Subscription subscription);
+
+    Subscription findById(String subscriptionId);
 }

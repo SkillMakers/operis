@@ -1,10 +1,10 @@
 package com.operis.subscription.code.model.port.in;
 
-import com.operis.subscription.code.model.UserSubscription;
+import com.operis.subscription.code.model.model.SubscribeUserCommand;
 
 public interface UserSubscriptionUseCases {
 
-    UserSubscription subscribeUser(UserSubscription userSubscription);
+    void subscribeUser(SubscribeUserCommand subscribeUserCommand);
 
     void unsubscribe(Long userSubscriptionId);
 }

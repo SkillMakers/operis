@@ -1,4 +1,4 @@
-package com.operis.operis.subscription.service.adapter.out.persistence;
+package com.operis.operis.subscription.service.adapter.out.persistence.Subscription;
 
 import com.operis.subscription.code.model.Subscription;
 import com.operis.subscription.code.model.port.out.persistence.SubscriptionRepository;
@@ -18,4 +18,10 @@ public class JPASubscriptionRepository implements SubscriptionRepository {
         return subscription;
     }
 
+    @Override
+    public Subscription findById(String subscriptionId) {
+        return jpaSubscriptionSpringDataRepository.findById(subscriptionId)
+                .map(SubscriptionEntity::toDomain)
+                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+    }
 }

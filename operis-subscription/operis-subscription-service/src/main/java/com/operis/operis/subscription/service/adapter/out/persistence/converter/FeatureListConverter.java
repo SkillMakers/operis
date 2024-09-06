@@ -24,11 +24,11 @@ public class FeatureListConverter implements AttributeConverter<List<Feature>, S
     }
 
     @Override
-    public List<Feature> convertToEntityAttribute(String dbData) {
-        if (dbData == null || dbData.isEmpty()) {
+    public List<Feature> convertToEntityAttribute(String features) {
+        if (features == null || features.isEmpty()) {
             return List.of();
         }
-        return Arrays.stream(dbData.split(SPLIT_CHAR))
+        return Arrays.stream(features.split(SPLIT_CHAR))
                 .map(Feature::valueOf)
                 .collect(Collectors.toList());
     }

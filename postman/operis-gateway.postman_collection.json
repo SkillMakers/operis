@@ -657,6 +657,38 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "Subscribe user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userEmail\": \"imad.test@gmail.com\",\r\n    \"subscriptionId\": \"00e46bcb-5ee6-48c0-921f-84c300c3b856\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user-subscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user-subscriptions"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
