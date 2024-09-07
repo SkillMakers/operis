@@ -24,7 +24,7 @@ public class UserSubscriptionService implements UserSubscriptionUseCases {
     }
 
     @Override
-    public void unsubscribe(Long userSubscriptionId) {
+    public void unsubscribe(String userSubscriptionId) {
         userSubscriptionRepository.delete(userSubscriptionId);
     }
 }

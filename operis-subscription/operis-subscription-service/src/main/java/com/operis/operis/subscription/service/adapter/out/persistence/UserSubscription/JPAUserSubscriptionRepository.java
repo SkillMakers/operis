@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class JPAUserSubscriptionRepository implements UserSubscriptionRepository {
@@ -20,7 +22,13 @@ public class JPAUserSubscriptionRepository implements UserSubscriptionRepository
     }
 
     @Override
-    public void delete(Long userSubscriptionId) {
+    @Transactional
+    public void delete(String userSubscriptionId) {
+        Optional<UserSubscriptionEntity> userSubscriptionEntity = jpaUserSubscriptionSpringDataRepository.findById(userSubscriptionId);
+        UserSubscriptionEntity entity = userSubscriptionEntity.orElseThrow(() ->
+                new RuntimeException("UserSubscriptionEntity not found for id: " + userSubscriptionId)
+        );
+        jpaUserSubscriptionSpringDataRepository.delete(entity);
 
     }
 

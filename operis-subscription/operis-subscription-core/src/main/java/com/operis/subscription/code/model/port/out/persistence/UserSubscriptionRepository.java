@@ -6,5 +6,5 @@ public interface UserSubscriptionRepository {
 
     void save(UserSubscription userSubscription);
 
-    void delete(Long userSubscriptionId);
+    void delete(String userSubscriptionId);
 }

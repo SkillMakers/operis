@@ -659,24 +659,20 @@
 					"response": []
 				},
 				{
-					"name": "Subscribe user",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Susbscribe user",
 					"request": {
 						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Unsusbscribe user",
+					"request": {
+						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userEmail\": \"imad.test@gmail.com\",\r\n    \"subscriptionId\": \"00e46bcb-5ee6-48c0-921f-84c300c3b856\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/user-subscriptions",
+							"raw": "http://localhost:8080/api/user-subscriptions/d17c6b9a-cb29-40a4-b984-f77d95decfb1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -684,7 +680,8 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"user-subscriptions"
+								"user-subscriptions",
+								"d17c6b9a-cb29-40a4-b984-f77d95decfb1"
 							]
 						}
 					},

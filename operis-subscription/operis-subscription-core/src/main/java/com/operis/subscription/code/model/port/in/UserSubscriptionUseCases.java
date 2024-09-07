@@ -6,5 +6,5 @@ public interface UserSubscriptionUseCases {
 
     void subscribeUser(SubscribeUserCommand subscribeUserCommand);
 
-    void unsubscribe(Long userSubscriptionId);
+    void unsubscribe(String userSubscriptionId);
 }
