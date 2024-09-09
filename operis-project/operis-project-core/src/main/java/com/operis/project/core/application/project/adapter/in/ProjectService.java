@@ -1,7 +1,8 @@
 package com.operis.project.core.application.project.adapter.in;
 
 import com.operis.project.core.application.project.model.*;
-import com.operis.project.core.application.project.model.exception.NotFoundException;
+import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
+import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.application.project.port.out.http.UserProfileClient;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
@@ -21,6 +22,8 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project createProject(CreateProjectCommand command) {
+
+
         return projectRepository.save(
                 new Project(UUID.randomUUID().toString(),
                         command.owner(),
@@ -38,7 +41,7 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public Project changeProjectName(ChangeProjectNameCommand command) {
         projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         return projectRepository.changeProjectName(command.projectId(), command.newName());
     }
@@ -46,7 +49,7 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public Project changeProjectDescription(ChangeProjectDescriptionCommand command) {
         projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         return projectRepository.changeProjectDescription(command.projectId(), command.newDescription());
     }
@@ -54,7 +57,7 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public void archiveProject(DeleteProjectCommand command) {
         projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         projectRepository.archiveProject(command.projectId());
     }
@@ -62,7 +65,7 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public Project changeProjectMembers(ChangeProjectMembersCommand command) {
         Project foundProject = projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         if (command.hasMembers()) {
             List<String> projectMembersEmails = command.getMembersEmails();
@@ -73,7 +76,7 @@ public class ProjectService implements ProjectUseCases {
             difference.removeAll(existingUserEmails);
 
             if (!difference.isEmpty()) {
-                throw new NotFoundException("Some members do not have an user account : %s"
+                throw new ProjectNotFoundException("Some members do not have an user account : %s"
                         .formatted(difference));
             }
         }
@@ -85,7 +88,15 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public Project addTaskToProject(AddTaskToProjectCommand command) {
         Project foundProject = projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        if (foundProject.isNotAMember(new ProjectMember(command.owner().userEmail()))) {
+            throw new IllegalProjectMemberException("Task cannot be created by a non-member");
+        }
+
+        if (foundProject.isNotAMember(command.assignedTo())) {
+            throw new IllegalProjectMemberException("Task cannot be assigned to a non-member");
+        }
 
         Task task = new Task(UUID.randomUUID().toString(),
                 command.title(),
@@ -112,7 +123,7 @@ public class ProjectService implements ProjectUseCases {
     @Override
     public Project removeTaskFromProject(RemoveTaskCommand command) {
         Project foundProject = projectRepository.findById(command.projectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         foundProject.tasks().removeIf(projectTask -> projectTask.id().equals(command.taskId()));
         taskRepository.deleteById(command.taskId());

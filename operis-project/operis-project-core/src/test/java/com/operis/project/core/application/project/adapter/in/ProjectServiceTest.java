@@ -1,7 +1,8 @@
 package com.operis.project.core.application.project.adapter.in;
 
 import com.operis.project.core.application.project.model.*;
-import com.operis.project.core.application.project.model.exception.NotFoundException;
+import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
+import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
 import com.operis.project.core.application.project.port.out.http.UserProfileClient;
 import com.operis.project.core.application.project.port.out.persistence.ProjectRepository;
 import com.operis.project.core.application.task.model.Task;
@@ -101,7 +102,7 @@ class ProjectServiceTest {
 
             // When
             assertThrows(
-                    NotFoundException.class,
+                    ProjectNotFoundException.class,
                     () -> projectService.changeProjectName(
                             new ChangeProjectNameCommand(projectId, "Project name updated")
                     )
@@ -144,7 +145,7 @@ class ProjectServiceTest {
 
             // When
             assertThrows(
-                    NotFoundException.class,
+                    ProjectNotFoundException.class,
                     () -> projectService.changeProjectDescription(
                             new ChangeProjectDescriptionCommand(projectId, "new Description of project")
                     )
@@ -184,7 +185,7 @@ class ProjectServiceTest {
             when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
             // When
-            assertThrows(NotFoundException.class, () -> projectService.archiveProject(new DeleteProjectCommand(projectId)));
+            assertThrows(ProjectNotFoundException.class, () -> projectService.archiveProject(new DeleteProjectCommand(projectId)));
 
             // Then
             verify(projectRepository, never()).save(any(Project.class));
@@ -256,7 +257,7 @@ class ProjectServiceTest {
             when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
             // When
-            assertThrows(NotFoundException.class, () -> projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, projectMembers)));
+            assertThrows(ProjectNotFoundException.class, () -> projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, projectMembers)));
 
             // Then
             verify(projectRepository, never()).save(any(Project.class));
@@ -315,7 +316,7 @@ class ProjectServiceTest {
 
             // When
             assertThrows(
-                    IllegalArgumentException.class,
+                    IllegalProjectMemberException.class,
                     () -> projectService.addTaskToProject(new AddTaskToProjectCommand(
                             projectId,
                             "Create database migration script",
@@ -338,7 +339,7 @@ class ProjectServiceTest {
 
             // When
             assertThrows(
-                    NotFoundException.class,
+                    ProjectNotFoundException.class,
                     () -> projectService.addTaskToProject(
                             new AddTaskToProjectCommand(
                                     projectId,
@@ -397,7 +398,7 @@ class ProjectServiceTest {
 
             // When
             assertThrows(
-                    NotFoundException.class,
+                    ProjectNotFoundException.class,
                     () -> projectService.addTaskToProject(
                             new AddTaskToProjectCommand(
                                     projectId,

@@ -2,12 +2,13 @@ package com.operis.project.core.service.adapter.in.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.operis.project.core.application.project.model.*;
+import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
+import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,8 +17,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProjectController.class)
@@ -44,10 +51,10 @@ class ProjectControllerTest {
                     "Create Operis Web App", "Create an IT product allowing to manage projects."
             );
 
-            when(jwtTokenService.extractUserEmail(Mockito.anyString()))
+            when(jwtTokenService.extractUserEmail(anyString()))
                     .thenReturn("imad.test@gmail.com");
 
-            when(projectUseCases.createProject(Mockito.any(CreateProjectCommand.class)))
+            when(projectUseCases.createProject(any(CreateProjectCommand.class)))
                     .thenReturn(new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
                             createProjectPayload.name(),
                             createProjectPayload.description()));
@@ -71,7 +78,7 @@ class ProjectControllerTest {
                     "Create Operis Web Application."
             );
 
-            when(projectUseCases.changeProjectName(Mockito.any(ChangeProjectNameCommand.class)))
+            when(projectUseCases.changeProjectName(any(ChangeProjectNameCommand.class)))
                     .thenReturn(new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
                             changeProjectNamePayload.newName(),
                             "Create an IT product allowing to manage projects."));
@@ -94,7 +101,7 @@ class ProjectControllerTest {
                     "Create an IT product allowing to manage projects."
             );
 
-            when(projectUseCases.changeProjectDescription(Mockito.any(ChangeProjectDescriptionCommand.class)))
+            when(projectUseCases.changeProjectDescription(any(ChangeProjectDescriptionCommand.class)))
                     .thenReturn(new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
                             "Create Operis Web App.",
                             "Create an IT product allowing to manage projects for individuals and companies."));
@@ -117,10 +124,10 @@ class ProjectControllerTest {
                     "Migrate to last Spring boot version.", "Desc", "imad.test@gmail.com"
             );
 
-            when(jwtTokenService.extractUserEmail(Mockito.anyString()))
+            when(jwtTokenService.extractUserEmail(anyString()))
                     .thenReturn("imad.test@gmail.com");
 
-            when(projectUseCases.addTaskToProject(Mockito.any(AddTaskToProjectCommand.class)))
+            when(projectUseCases.addTaskToProject(any(AddTaskToProjectCommand.class)))
                     .thenReturn(new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
                             "Create Operis Web App.",
                             "Create an IT product allowing to manage projects for individuals and companies."));
@@ -133,6 +140,76 @@ class ProjectControllerTest {
                     // Then
                     .andExpect(status().isOk());
         }
+
+        @Test
+        void shouldReturnNotFoundHttpErrorWhenTheProjectDoesntExist() throws Exception {
+            // Given
+            AddTaskToProjectPayload addTaskToProjectPayload = new AddTaskToProjectPayload(
+                    "Migrate to last Spring boot version.", "Desc", "imad.test@gmail.com"
+            );
+
+            when(jwtTokenService.extractUserEmail(anyString())).thenReturn("imad.test@gmail.com");
+
+            when(projectUseCases.addTaskToProject(any(AddTaskToProjectCommand.class)))
+                    .thenThrow(new ProjectNotFoundException("Project not found"));
+
+            // When
+            mockMvc.perform(put("/api/projects/projectId/tasks")
+                            .header("Authorization", "Bearer 1234")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
+                    // Then
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status", is(NOT_FOUND.value())))
+                    .andExpect(jsonPath("$.message", is("Project not found")));
+        }
+
+        @Test
+        void shouldReturnConflictHttpErrorWhenTheTaskIsAssignedToSomeoneWhoIsNotPartOfTheProject() throws Exception {
+            // Given
+            AddTaskToProjectPayload addTaskToProjectPayload = new AddTaskToProjectPayload(
+                    "Migrate to last Spring boot version.", "Desc", "imad.test@gmail.com"
+            );
+
+            when(jwtTokenService.extractUserEmail(anyString())).thenReturn("imad.test@gmail.com");
+
+            when(projectUseCases.addTaskToProject(any(AddTaskToProjectCommand.class)))
+                    .thenThrow(new IllegalProjectMemberException("Task cannot be assigned to a non-member"));
+
+            // When
+            mockMvc.perform(put("/api/projects/projectId/tasks")
+                            .header("Authorization", "Bearer 1234")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
+                    // Then
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.message", is("Task cannot be assigned to a non-member")));
+        }
+
+        @Test
+        void shouldReturnConflictHttpErrorWhenTheTaskIsCreatedBySomeoneWhoIsNotAMemberOfTheProject
+                () throws Exception {
+            // Given
+            AddTaskToProjectPayload addTaskToProjectPayload = new AddTaskToProjectPayload(
+                    "Migrate to last Spring boot version.", "Desc", "imad.test@gmail.com"
+            );
+
+            when(jwtTokenService.extractUserEmail(anyString())).thenReturn("ronald.test@gmail.com");
+
+            when(projectUseCases.addTaskToProject(any(AddTaskToProjectCommand.class)))
+                    .thenThrow(new IllegalProjectMemberException("Task cannot be created by a non-member"));
+
+            // When
+            mockMvc.perform(put("/api/projects/projectId/tasks")
+                            .header("Authorization", "Bearer 1234")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
+                    // Then
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.message", is("Task cannot be created by a non-member")));
+        }
     }
 
     @Nested
@@ -144,7 +221,7 @@ class ProjectControllerTest {
                     Set.of("imad.test@gmail.com", "ronald.test@gmail.com")
             );
 
-            when(projectUseCases.changeProjectMembers(Mockito.any(ChangeProjectMembersCommand.class)))
+            when(projectUseCases.changeProjectMembers(any(ChangeProjectMembersCommand.class)))
                     .thenReturn(new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
                             "Create Operis Web App.",
                             "Create an IT product allowing to manage projects for individuals and companies."));

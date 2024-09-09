@@ -68,6 +68,10 @@ public record Project(
                 false);
     }
 
+    public boolean isNotAMember(ProjectMember member) {
+        return !isMember(member);
+    }
+
     public boolean isMember(ProjectMember member) {
         return members.contains(member);
     }
