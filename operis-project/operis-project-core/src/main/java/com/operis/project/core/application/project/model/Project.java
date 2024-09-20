@@ -14,8 +14,8 @@ public record Project(
         String description,
         LocalDateTime createdAt,
         List<ProjectTask> tasks,
-        List<ProjectMember> members,
-        boolean archived) {
+        List<ProjectMember> members
+) {
 
     public Project(String id, ProjectOwner owner, String name, String description, List<ProjectTask> tasks, List<ProjectMember> members, boolean archived) {
         this(
@@ -25,8 +25,8 @@ public record Project(
                 description,
                 LocalDateTime.now(),
                 tasks == null ? new ArrayList<>() : tasks,
-                members == null ? Arrays.asList(new ProjectMember(owner.userEmail())) : members,
-                archived);
+                members == null ? Arrays.asList(new ProjectMember(owner.userEmail())) : members
+        );
     }
 
     public Project(String id, ProjectOwner owner, String name, String description) {
@@ -35,7 +35,7 @@ public record Project(
 
     public Project(Project project, boolean archived) {
         this(project.id(), project.owner(), project.name(), project.description(), project.createdAt(),
-                project.tasks(), project.members(), archived);
+                project.tasks(), project.members());
 
     }
 
@@ -50,8 +50,8 @@ public record Project(
                 Stream.concat(Objects.requireNonNull(members, "members must not be null").stream(),
                                 Stream.of(new ProjectMember(project.owner.userEmail())))
                         .distinct()
-                        .toList(),
-                false);
+                        .toList()
+        );
     }
 
     public Project copyAppendingTask(ProjectTask task) {
@@ -64,8 +64,8 @@ public record Project(
                 Stream.concat(
                         Objects.requireNonNull(this.tasks, "tasks must not be null")
                                 .stream(), Stream.of(task)).toList(),
-                this.members,
-                false);
+                this.members
+        );
     }
 
     public boolean isNotAMember(ProjectMember member) {

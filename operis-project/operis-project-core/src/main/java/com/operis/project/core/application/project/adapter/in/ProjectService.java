@@ -40,7 +40,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project changeProjectName(ChangeProjectNameCommand command) {
-        projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         return projectRepository.changeProjectName(command.projectId(), command.newName());
@@ -48,7 +48,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project changeProjectDescription(ChangeProjectDescriptionCommand command) {
-        projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         return projectRepository.changeProjectDescription(command.projectId(), command.newDescription());
@@ -56,7 +56,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public void archiveProject(DeleteProjectCommand command) {
-        projectRepository.findById(command.projectId())
+        projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         projectRepository.archiveProject(command.projectId());
@@ -64,7 +64,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project changeProjectMembers(ChangeProjectMembersCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        Project foundProject = projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         if (command.hasMembers()) {
@@ -87,7 +87,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project addTaskToProject(AddTaskToProjectCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        Project foundProject = projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         if (foundProject.isNotAMember(new ProjectMember(command.owner().userEmail()))) {
@@ -118,7 +118,7 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project removeTaskFromProject(RemoveTaskCommand command) {
-        Project foundProject = projectRepository.findById(command.projectId())
+        Project foundProject = projectRepository.findById(command.projectId(), false)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         foundProject.tasks().removeIf(projectTask -> projectTask.id().equals(command.taskId()));

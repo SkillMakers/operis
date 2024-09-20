@@ -18,7 +18,7 @@ public interface ProjectRepository {
 
     void archiveProject(String projectId);
 
-    Optional<Project> findById(String id);
+    Optional<Project> findById(String id, boolean archived);
 
     List<Project> findAll(ProjectCriteria criteria);
 }

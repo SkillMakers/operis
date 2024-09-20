@@ -50,7 +50,7 @@ public class ProjectEntity {
                 project.members().stream().map(ProjectMember::getUserEmail).toList(),
                 null,
                 project.createdAt(),
-                project.archived()
+                false
         );
         projectEntity.setTasks(project.tasks().stream()
                 .map(task -> TaskEntity.from(task, projectEntity))
@@ -68,8 +68,7 @@ public class ProjectEntity {
                 this.description,
                 this.createdAt,
                 this.tasks.stream().map(TaskEntity::toDomain).toList(),
-                this.membersEmails.stream().map(ProjectMember::new).toList(),
-                this.archived
+                this.membersEmails.stream().map(ProjectMember::new).toList()
         );
     }
 }

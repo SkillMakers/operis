@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface JPAProjectSpringDataRepository extends JpaRepository<ProjectEntity, String> {
 
@@ -20,4 +23,8 @@ public interface JPAProjectSpringDataRepository extends JpaRepository<ProjectEnt
     @Modifying(clearAutomatically = true)
     @Query("update ProjectEntity p set p.archived = true where p.id = :projectId")
     void archiveProject(String projectId);
+
+    Optional<ProjectEntity> findByIdAndArchived(String id, boolean archived);
+
+    List<ProjectEntity> findAllByArchivedFalse();
 }

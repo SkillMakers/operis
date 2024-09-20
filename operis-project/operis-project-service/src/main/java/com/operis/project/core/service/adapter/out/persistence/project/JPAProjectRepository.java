@@ -63,14 +63,14 @@ public class JPAProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public Optional<Project> findById(String id) {
-        return jpaProjectSpringDataRepository.findById(id)
+    public Optional<Project> findById(String id, boolean archived) {
+        return jpaProjectSpringDataRepository.findByIdAndArchived(id, archived)
                 .map(ProjectEntity::toDomain);
     }
 
     @Override
     public List<Project> findAll(ProjectCriteria criteria) {
-        return jpaProjectSpringDataRepository.findAll().stream()
+        return jpaProjectSpringDataRepository.findAllByArchivedFalse().stream()
                 .filter(entity -> entity.isArchived() == criteria.archived())
                 .map(ProjectEntity::toDomain)
                 .toList();

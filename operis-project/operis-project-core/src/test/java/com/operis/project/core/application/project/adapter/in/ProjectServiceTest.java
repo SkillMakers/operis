@@ -83,7 +83,7 @@ class ProjectServiceTest {
                     "Project description"
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             projectService.changeProjectName(
@@ -98,7 +98,7 @@ class ProjectServiceTest {
             // Given
             String projectId = "123456";
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(
@@ -126,7 +126,7 @@ class ProjectServiceTest {
                     "Project description"
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             projectService.changeProjectDescription(
@@ -141,7 +141,7 @@ class ProjectServiceTest {
             // Given
             String projectId = "123456";
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(
@@ -168,7 +168,7 @@ class ProjectServiceTest {
                     "Project description"
             );
 
-            when(projectRepository.findById(project.id())).thenReturn(Optional.of(project));
+            when(projectRepository.findById(project.id(), false)).thenReturn(Optional.of(project));
 
             // When
             projectService.archiveProject(new DeleteProjectCommand("123456"));
@@ -182,7 +182,7 @@ class ProjectServiceTest {
             // Given
             String projectId = "123456";
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(ProjectNotFoundException.class, () -> projectService.archiveProject(new DeleteProjectCommand(projectId)));
@@ -209,7 +209,7 @@ class ProjectServiceTest {
                     new ProjectMember("charles.test@gmail.com")
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
             when(userProfileClient.find(any())).thenReturn(List.of(
                     new Member("imad.test@gmail.com", "Imad", "Test"),
                     new Member("charles.test@gmail.com", "Charles", "Test")
@@ -236,7 +236,7 @@ class ProjectServiceTest {
                     "Project name",
                     "Project description"
             );
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             assertThrows(NullPointerException.class, () -> projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, null)));
@@ -260,7 +260,7 @@ class ProjectServiceTest {
                     new ProjectMember("charles.test@gmail.com")
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
             when(userProfileClient.find(any())).thenReturn(List.of());
 
             // When
@@ -279,7 +279,7 @@ class ProjectServiceTest {
                     new ProjectMember("charles.test@gmail.com")
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(ProjectNotFoundException.class, () -> projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, projectMembers)));
@@ -302,7 +302,7 @@ class ProjectServiceTest {
                     "Project description"
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             projectService.addTaskToProject(new AddTaskToProjectCommand(
@@ -337,7 +337,7 @@ class ProjectServiceTest {
                     "Project description"
             );
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             assertThrows(
@@ -360,7 +360,7 @@ class ProjectServiceTest {
             // Given
             String projectId = "123456";
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(
@@ -401,7 +401,7 @@ class ProjectServiceTest {
                     new TaskOwner("ronald.test@gmail.com"),
                     new ProjectMember("ronald.test@gmail.com")));
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.of(project));
 
             // When
             projectService.removeTaskFromProject(new RemoveTaskCommand(projectId, taskId));
@@ -419,7 +419,7 @@ class ProjectServiceTest {
             // Given
             String projectId = "123456";
 
-            when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+            when(projectRepository.findById(projectId, false)).thenReturn(Optional.empty());
 
             // When
             assertThrows(
