@@ -76,7 +76,7 @@ public class ProjectService implements ProjectUseCases {
             difference.removeAll(existingUserEmails);
 
             if (!difference.isEmpty()) {
-                throw new ProjectNotFoundException("Some members do not have an user account : %s"
+                throw new IllegalProjectMemberException("Some members do not have an user account : %s"
                         .formatted(difference));
             }
         }
@@ -104,10 +104,6 @@ public class ProjectService implements ProjectUseCases {
                 foundProject,
                 command.owner(),
                 command.assignedTo().getUserEmail());
-
-        if (!foundProject.isMember(new ProjectMember(task.assignedTo()))) {
-            throw new IllegalArgumentException("Task cannot be assigned to a non-member");
-        }
 
         taskRepository.save(task);
 

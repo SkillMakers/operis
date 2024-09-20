@@ -246,6 +246,31 @@ class ProjectServiceTest {
         }
 
         @Test
+        void shouldThrowErrorWhenMemberDoesntExist() {
+            // Given
+            String projectId = "123456";
+            var project = new Project(
+                    projectId,
+                    new ProjectOwner("ronald.test@gmail.com"),
+                    "Project name",
+                    "Project description"
+            );
+            List<ProjectMember> projectMembers = List.of(
+                    new ProjectMember("imad.test@gmail.com"),
+                    new ProjectMember("charles.test@gmail.com")
+            );
+
+            when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+            when(userProfileClient.find(any())).thenReturn(List.of());
+
+            // When
+            assertThrows(IllegalProjectMemberException.class, () -> projectService.changeProjectMembers(new ChangeProjectMembersCommand(projectId, projectMembers)));
+
+            // Then
+            verify(projectRepository, never()).save(any(Project.class));
+        }
+
+        @Test
         void shouldThrowExceptionWhenProjectNotFound() {
             // Given
             String projectId = "123456";
