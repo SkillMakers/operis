@@ -17,7 +17,7 @@ public record Project(
         List<ProjectMember> members
 ) {
 
-    public Project(String id, ProjectOwner owner, String name, String description, List<ProjectTask> tasks, List<ProjectMember> members, boolean archived) {
+    public Project(String id, ProjectOwner owner, String name, String description, List<ProjectTask> tasks, List<ProjectMember> members) {
         this(
                 Objects.requireNonNull(id, "id must not be null"),
                 Objects.requireNonNull(owner, "owner must not be null"),
@@ -30,7 +30,7 @@ public record Project(
     }
 
     public Project(String id, ProjectOwner owner, String name, String description) {
-        this(id, owner, name, description, null, null, false);
+        this(id, owner, name, description, null, null);
     }
 
     public Project(Project project, boolean archived) {

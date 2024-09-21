@@ -69,8 +69,8 @@ public class ProjectService implements ProjectUseCases {
 
         if (command.hasMembers()) {
             List<String> projectMembersEmails = command.getMembersEmails();
-            List<Member> existingMembersUserAccounts = userProfileClient.find(new GetUserProfilesFromEmailsPayload(projectMembersEmails));
-            List<String> existingUserEmails = Member.getUserEmails(existingMembersUserAccounts);
+            List<Member> existingMembersUserProfiles = userProfileClient.find(new GetUserProfilesFromEmailsPayload(projectMembersEmails));
+            List<String> existingUserEmails = Member.getUserEmails(existingMembersUserProfiles);
 
             List<String> difference = new ArrayList<>(projectMembersEmails);
             difference.removeAll(existingUserEmails);

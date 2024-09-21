@@ -5,6 +5,8 @@ import com.operis.project.core.application.project.model.*;
 import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
 import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
+import com.operis.project.core.application.task.model.TaskOwner;
+import com.operis.project.core.application.task.model.TaskStatus;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
 import org.junit.jupiter.api.Nested;
@@ -15,9 +17,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
@@ -66,6 +70,48 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(createProjectPayload)))
                     // Then
                     .andExpect(status().isCreated());
+        }
+    }
+
+    @Nested
+    class GetAllProjects {
+        @Test
+        void shouldGetAllProjects() throws Exception {
+            // Given
+            when(projectUseCases.getAllProjects())
+                    .thenReturn(List.of(
+                            new Project("projectId", new ProjectOwner("imad.test@gmail.com"),
+                                    "Create Operis Web App",
+                                    "Create an IT product allowing to manage projects.",
+                                    List.of(new ProjectTask(
+                                            "taskId",
+                                            "Migrate to last Spring Boot version",
+                                            "Migrate all modules to last Spring Boot version",
+                                            new TaskOwner("ronald.test@gmail.com"),
+                                            new ProjectMember("imad.test@gmail.com"),
+                                            TaskStatus.TODO,
+                                            LocalDateTime.now())),
+                                    List.of(new ProjectMember("imad.test@gmail.com"), new ProjectMember("ronald.test@gmail.com"))
+                            )));
+
+            // When
+            mockMvc.perform(get("/api/projects")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    // Then
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].id", is("projectId")))
+                    .andExpect(jsonPath("$[0].name", is("Create Operis Web App")))
+                    .andExpect(jsonPath("$[0].description", is("Create an IT product allowing to manage projects.")))
+                    .andExpect(jsonPath("$[0].owner", is("imad.test@gmail.com")))
+                    .andExpect(jsonPath("$[0].members", hasItems("ronald.test@gmail.com", "imad.test@gmail.com")))
+                    .andExpect(jsonPath("$[0].tasks", hasSize(1)))
+                    .andExpect(jsonPath("$[0].tasks[0].projectId", is("projectId")))
+                    .andExpect(jsonPath("$[0].tasks[0].id", is("taskId")))
+                    .andExpect(jsonPath("$[0].tasks[0].title", is("Migrate to last Spring Boot version")))
+                    .andExpect(jsonPath("$[0].tasks[0].description", is("Migrate all modules to last Spring Boot version")))
+                    .andExpect(jsonPath("$[0].tasks[0].ownerId", is("ronald.test@gmail.com")))
+                    .andExpect(jsonPath("$[0].tasks[0].assigneeId", is("imad.test@gmail.com")))
+                    .andExpect(jsonPath("$[0].tasks[0].status", is("TODO")));
         }
     }
 
@@ -217,7 +263,7 @@ class ProjectControllerTest {
         @Test
         void shouldChangeProjectMembers() throws Exception {
             // Given
-            ChangeProjectMembersPayload addTaskToProjectPayload = new ChangeProjectMembersPayload(
+            ChangeProjectMembersPayload changeProjectMembersPayload = new ChangeProjectMembersPayload(
                     Set.of("imad.test@gmail.com", "ronald.test@gmail.com")
             );
 
@@ -229,10 +275,31 @@ class ProjectControllerTest {
             // When
             mockMvc.perform(put("/api/projects/projectId/members")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
+                            .content(objectMapper.writeValueAsString(changeProjectMembersPayload)))
                     // Then
                     .andExpect(status().isOk());
         }
+
+        @Test
+        void shouldReturnConflictHttpErrorWhenAtLeastAMemberDoesntExist() throws Exception {
+            // Given
+            ChangeProjectMembersPayload changeProjectMembersPayload = new ChangeProjectMembersPayload(
+                    Set.of("imad.test@gmail.com", "ronald.test@gmail.com")
+            );
+
+            when(projectUseCases.changeProjectMembers(any(ChangeProjectMembersCommand.class)))
+                    .thenThrow(new IllegalProjectMemberException("Some members do not have an user account : [imad.test@gmail.com]"));
+
+            // When
+            mockMvc.perform(put("/api/projects/projectId/members")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(changeProjectMembersPayload)))
+                    // Then
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.message", is("Some members do not have an user account : [imad.test@gmail.com]")));
+        }
+
     }
 
     @Nested
