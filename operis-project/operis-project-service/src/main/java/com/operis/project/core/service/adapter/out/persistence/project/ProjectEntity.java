@@ -67,7 +67,7 @@ public class ProjectEntity {
                 this.name,
                 this.description,
                 this.createdAt,
-                this.tasks.stream().map(TaskEntity::toDomain).toList(),
+                this.tasks.stream().map(TaskEntity::toProjectDomain).toList(),
                 this.membersEmails.stream().map(ProjectMember::new).toList()
         );
     }

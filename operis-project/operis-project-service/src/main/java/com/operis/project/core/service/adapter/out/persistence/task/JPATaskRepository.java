@@ -1,9 +1,12 @@
 package com.operis.project.core.service.adapter.out.persistence.task;
 
 import com.operis.project.core.application.task.model.Task;
+import com.operis.project.core.application.task.model.TaskCriteria;
 import com.operis.project.core.application.task.port.out.persistence.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,5 +23,12 @@ public class JPATaskRepository implements TaskRepository {
     @Override
     public void deleteById(String taskId) {
         jpaTaskSpringDataRepository.deleteById(taskId);
+    }
+
+    @Override
+    public List<Task> getTasks(TaskCriteria criteria) {
+        return jpaTaskSpringDataRepository.findAll(criteria.projectId(), criteria.status(), criteria.from(), criteria.to())
+                .stream().map(TaskEntity::toTaskDomain)
+                .toList();
     }
 }

@@ -20,6 +20,4 @@ public interface ProjectUseCases {
     Project addTaskToProject(AddTaskToProjectCommand command);
 
     Project removeTaskFromProject(RemoveTaskCommand command);
-
-    void exportProjectSummary(ExportCommand command);
 }

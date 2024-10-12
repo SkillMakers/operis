@@ -22,8 +22,6 @@ public class ProjectService implements ProjectUseCases {
 
     @Override
     public Project createProject(CreateProjectCommand command) {
-
-
         return projectRepository.save(
                 new Project(UUID.randomUUID().toString(),
                         command.owner(),
@@ -32,6 +30,7 @@ public class ProjectService implements ProjectUseCases {
                 )
         );
     }
+
 
     @Override
     public List<Project> getAllProjects() {
@@ -125,10 +124,5 @@ public class ProjectService implements ProjectUseCases {
         taskRepository.deleteById(command.taskId());
 
         return projectRepository.save(foundProject);
-    }
-
-    @Override
-    public void exportProjectSummary(ExportCommand command) {
-
     }
 }

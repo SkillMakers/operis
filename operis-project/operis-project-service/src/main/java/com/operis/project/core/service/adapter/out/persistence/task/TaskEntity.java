@@ -77,13 +77,26 @@ public class TaskEntity {
         );
     }
 
-    public ProjectTask toDomain() {
+    public ProjectTask toProjectDomain() {
         return new ProjectTask(
                 this.id,
                 this.title,
                 this.description,
                 new TaskOwner(this.ownerEmail),
                 new ProjectMember(this.assigneeToEmail),
+                this.status.toDomain(),
+                this.createdAt
+        );
+    }
+
+    public Task toTaskDomain() {
+        return new Task(
+                this.id,
+                this.title,
+                this.description,
+                this.project.toDomain(),
+                new TaskOwner(this.ownerEmail),
+                this.assigneeToEmail,
                 this.status.toDomain(),
                 this.createdAt
         );
