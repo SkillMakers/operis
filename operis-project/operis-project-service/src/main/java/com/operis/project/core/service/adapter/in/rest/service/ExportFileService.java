@@ -21,7 +21,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @RequiredArgsConstructor
 public class ExportFileService {
 
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = ofPattern("ddMMyyyy HH:mm:ss");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = ofPattern("dd/MM/yyyy HH:mm:ss");
 
     private final ReportUseCases reportUseCases;
 

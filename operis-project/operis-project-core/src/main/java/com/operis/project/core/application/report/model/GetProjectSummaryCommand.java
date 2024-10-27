@@ -2,9 +2,9 @@ package com.operis.project.core.application.report.model;
 
 import com.operis.project.core.application.task.model.TaskStatus;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public record GetProjectSummaryCommand(String projectId, TaskStatus status, LocalDate from, LocalDate to) {
+public record GetProjectSummaryCommand(String projectId, TaskStatus status, LocalDateTime from, LocalDateTime to) {
 
     public GetProjectSummaryCommand {
         if (from.isAfter(to)) {

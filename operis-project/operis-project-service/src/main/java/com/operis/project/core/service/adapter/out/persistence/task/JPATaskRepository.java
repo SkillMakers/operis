@@ -27,7 +27,11 @@ public class JPATaskRepository implements TaskRepository {
 
     @Override
     public List<Task> getTasks(TaskCriteria criteria) {
-        return jpaTaskSpringDataRepository.findAll(criteria.projectId(), criteria.status(), criteria.from(), criteria.to())
+        return jpaTaskSpringDataRepository.findAll(
+                        criteria.projectId(),
+                        TaskStatusEntity.from(criteria.status()),
+                        criteria.from(),
+                        criteria.to())
                 .stream().map(TaskEntity::toTaskDomain)
                 .toList();
     }
