@@ -4,6 +4,8 @@ import com.operis.project.core.application.project.model.DeleteProjectCommand;
 import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/projects")
 @RequiredArgsConstructor
+@Tag(name = "Project API", description = "Operations for managing projects")
 public class ProjectController {
 
     private final ProjectUseCases projectUseCases;
     private final JWTTokenService jwtTokenService;
 
     @PostMapping("")
+    @Operation(summary = "Create a new project", description = "Creates a new project with the provided details.")
     public ResponseEntity<ProjectDto> createProject(@RequestBody CreateProjectPayload payload,
                                                     @RequestHeader("Authorization") String authorizationHeader) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
@@ -32,6 +36,7 @@ public class ProjectController {
     }
 
     @GetMapping("")
+    @Operation(summary = "Get all projects", description = "Retrieves a list of all projects.")
     public List<ProjectDto> getAllProjects() {
         return projectUseCases.getAllProjects().stream()
                 .map(ProjectDto::from)
@@ -39,6 +44,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/name")
+    @Operation(summary = "Change project name", description = "Updates the name of an existing project.")
     public ProjectDto changeProjectName(
             @PathVariable("projectId") String projectId,
             @RequestBody ChangeProjectNamePayload payload) {
@@ -48,6 +54,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/description")
+    @Operation(summary = "Change project description", description = "Updates the description of an existing project.")
     public ProjectDto changeProjectDescription(
             @PathVariable("projectId") String projectId,
             @RequestBody ChangeProjectDescriptionPayload payload) {
@@ -57,6 +64,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/tasks")
+    @Operation(summary = "Add a task to project", description = "Adds a new task to an existing project.")
     public ProjectDto addTaskToProject(@PathVariable("projectId") String projectId,
                                        @RequestBody AddTaskToProjectPayload payload,
                                        @RequestHeader("Authorization") String authorizationHeader) {
@@ -67,6 +75,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/members")
+    @Operation(summary = "Change project members", description = "Updates the members of an existing project.")
     public ProjectDto changeProjectMembers(@PathVariable("projectId") String projectId,
                                            @RequestBody ChangeProjectMembersPayload payload) {
         return ProjectDto.from(
@@ -75,6 +84,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectId}")
+    @Operation(summary = "Delete project", description = "Archives the project with the specified ID.")
     public void deleteProject(@PathVariable("projectId") String projectId) {
         projectUseCases.archiveProject(new DeleteProjectCommand(projectId));
     }
