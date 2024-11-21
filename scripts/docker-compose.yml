@@ -70,7 +70,7 @@ services:
     container_name: operis-subscription-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://susbcriptiondb:3310/operis-subscription
+      SPRING_DATASOURCE_URL: jdbc:mysql://susbcriptiondb:3306/operis-subscription
       SPRING_DATASOURCE_USERNAME: root
     networks:
       - mynetwork
