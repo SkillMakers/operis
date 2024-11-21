@@ -79,7 +79,7 @@ services:
       - susbcriptiondb
       - config-server
     ports:
-      - "8083:8083" # Optional, for local access
+      - "8084:8084" # Optional, for local access
 
   gateway:
     image: ibouakl/operis-gateway:1.0-SNAPSHOT
