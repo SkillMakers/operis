@@ -42,6 +42,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Cloud LoadBalancer -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.operis</groupId>
             <artifactId>operis-project-core</artifactId>

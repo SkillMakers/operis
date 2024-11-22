@@ -48,9 +48,9 @@ services:
       config-server:
         condition: service_healthy
 
-  user-profile-service:
+  user-profile-service1:
     image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
-    container_name: operis-user-profile-service
+    container_name: operis-user-profile-service1
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
@@ -66,6 +66,25 @@ services:
         condition: service_healthy
     ports:
       - "8083:8083" # Optional, for local access
+
+  user-profile-service2:
+    image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
+    container_name: operis-user-profile-service2
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
+      SPRING_DATASOURCE_USERNAME: root
+    networks:
+      - mynetwork
+    depends_on:
+      eureka:
+        condition: service_healthy
+      userprofiledb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    ports:
+      - "8085:8083" # Optional, for local access
 
   project-service:
     image: ibouakl/operis-project-service:1.0-SNAPSHOT
