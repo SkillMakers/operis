@@ -31,6 +31,11 @@ public class ProjectEntity {
     private String ownerEmail;
 
     @ElementCollection
+    @CollectionTable(
+            name = "project_members_emails",
+            joinColumns = @JoinColumn(name = "project_id")
+    )
+    @Column(name = "member_email")
     private List<String> membersEmails = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
