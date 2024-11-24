@@ -5,6 +5,7 @@ import com.operis.project.core.application.project.port.in.ProjectUseCases;
 import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class ProjectController {
     @PostMapping("")
     @Operation(summary = "Create a new project", description = "Creates a new project with the provided details.")
     public ResponseEntity<ProjectDto> createProject(@RequestBody CreateProjectPayload payload,
+                                                    @Parameter(description = "JWT token for the connected user", hidden = true)
                                                     @RequestHeader("Authorization") String authorizationHeader) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
 
