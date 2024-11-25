@@ -12,3 +12,11 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
   level:
     org.springframework.cloud.loadbalancer: DEBUG
+
+springdoc:
+  api-docs:
+    path: /project-service/v3/api-docs
+
+  swagger-ui:
+    config-url: /project-service/v3/api-docs/swagger-config
+    path: /project-service/swagger-ui.html
