@@ -33,8 +33,8 @@ public class JwtTokenFilter implements WebFilter {
         String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         String path = exchange.getRequest().getPath().toString();
-        if (path.equals("/api/auth/login") || path.equals("/api/users/create")) {
-           // passer à la chaîne suivante sans vérification
+        if (path.equals("/api/auth/login") || path.equals("/api/users/create") || path.startsWith("/project-service")) {
+            // passer à la chaîne suivante sans vérification
             return chain.filter(exchange);
         }
 
@@ -43,7 +43,7 @@ public class JwtTokenFilter implements WebFilter {
         }
 
         String token = header.substring(7);
-        JWTClaimsSet jwtClaimsSet ;
+        JWTClaimsSet jwtClaimsSet;
         try {
             jwtClaimsSet = jwtTokenUtil.parseToken(token);
         } catch (Exception e) {
