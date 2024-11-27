@@ -4,7 +4,8 @@ import com.operis.project.core.application.task.model.TaskStatus;
 
 import java.time.LocalDateTime;
 
-public record GetProjectSummaryCommand(String projectId, TaskStatus status, LocalDateTime from, LocalDateTime to) {
+public record GetProjectSummaryCommand(String triggeredBy, String projectId, TaskStatus status,
+                                       LocalDateTime from, LocalDateTime to) {
 
     public GetProjectSummaryCommand {
         if (from.isAfter(to)) {
