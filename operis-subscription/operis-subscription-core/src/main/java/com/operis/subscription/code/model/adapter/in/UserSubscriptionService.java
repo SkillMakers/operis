@@ -2,6 +2,7 @@ package com.operis.subscription.code.model.adapter.in;
 
 import com.operis.subscription.code.model.Subscription;
 import com.operis.subscription.code.model.UserSubscription;
+import com.operis.subscription.code.model.model.GetUserSubscriptionsCommand;
 import com.operis.subscription.code.model.model.SubscribeUserCommand;
 import com.operis.subscription.code.model.port.in.UserSubscriptionUseCases;
 import com.operis.subscription.code.model.port.out.persistence.SubscriptionRepository;
@@ -26,5 +27,10 @@ public class UserSubscriptionService implements UserSubscriptionUseCases {
     @Override
     public void unsubscribe(String userSubscriptionId) {
         userSubscriptionRepository.delete(userSubscriptionId);
+    }
+
+    @Override
+    public UserSubscription get(GetUserSubscriptionsCommand command) {
+        return userSubscriptionRepository.find(command.userEmail()).orElse(null);
     }
 }

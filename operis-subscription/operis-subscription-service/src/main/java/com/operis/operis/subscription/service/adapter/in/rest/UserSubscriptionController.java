@@ -1,6 +1,9 @@
 package com.operis.operis.subscription.service.adapter.in.rest;
 
 import com.operis.operis.subscription.service.adapter.in.rest.model.CreateUserSubscriptionPayloadRecord;
+import com.operis.operis.subscription.service.adapter.in.rest.model.GetUserSubscriptionPayload;
+import com.operis.operis.subscription.service.adapter.in.rest.model.UserSubscriptionDto;
+import com.operis.subscription.code.model.UserSubscription;
 import com.operis.subscription.code.model.port.in.UserSubscriptionUseCases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,5 +27,12 @@ public class UserSubscriptionController {
     public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         userSubscriptionUseCases.unsubscribe(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/get")
+    public ResponseEntity<UserSubscriptionDto> get(@RequestBody GetUserSubscriptionPayload payload) {
+        UserSubscription userSubscription = userSubscriptionUseCases.get(payload.toCommand());
+        UserSubscriptionDto result = UserSubscriptionDto.from(userSubscription);
+        return ResponseEntity.ok(result);
     }
 }

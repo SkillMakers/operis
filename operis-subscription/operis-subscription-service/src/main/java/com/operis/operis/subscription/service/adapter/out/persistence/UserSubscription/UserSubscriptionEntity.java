@@ -32,4 +32,7 @@ public class UserSubscriptionEntity {
         );
     }
 
+    public UserSubscription toDomain() {
+        return new UserSubscription(id, userEmail, subscription.toDomain());
+    }
 }

@@ -32,4 +32,9 @@ public class JPAUserSubscriptionRepository implements UserSubscriptionRepository
 
     }
 
+    @Override
+    public Optional<UserSubscription> find(String userEmail) {
+        return jpaUserSubscriptionSpringDataRepository.findByUserEmail(userEmail)
+                .map(UserSubscriptionEntity::toDomain);
+    }
 }
