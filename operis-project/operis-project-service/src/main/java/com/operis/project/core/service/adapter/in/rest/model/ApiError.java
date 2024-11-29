@@ -1,7 +1,10 @@
 package com.operis.project.core.service.adapter.in.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiError(Integer status, String message, List<String> details) {
 
     public ApiError {
@@ -15,6 +18,6 @@ public record ApiError(Integer status, String message, List<String> details) {
     }
 
     public ApiError(Integer status, String message) {
-        this(status, message, List.of());
+        this(status, message, null);
     }
 }
