@@ -1,7 +1,5 @@
 package com.operis.project.core.application.project.model;
 
-import org.springframework.util.CollectionUtils;
-
 import java.util.List;
 
 public record UserSubscription(String userEmail, String name, List<Feature> features) {
@@ -11,7 +9,10 @@ public record UserSubscription(String userEmail, String name, List<Feature> feat
     }
 
     public static boolean isExportAllowed(UserSubscription userSubscription) {
-        return userSubscription != null && !CollectionUtils.isEmpty(userSubscription.features) && userSubscription.features.contains(Feature.EXPORT);
+        return userSubscription != null
+                && userSubscription.features != null
+                && !userSubscription.features.isEmpty()
+                && userSubscription.features.contains(Feature.EXPORT);
     }
 
     public enum Feature {

@@ -7,6 +7,7 @@ import com.operis.project.core.service.adapter.in.rest.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class ProjectController {
     private final ProjectUseCases projectUseCases;
     private final JWTTokenService jwtTokenService;
 
-    @PostMapping("")
+    @PostMapping
     @Operation(summary = "Create a new project", description = "Creates a new project with the provided details.")
-    public ResponseEntity<ProjectDto> createProject(@RequestBody CreateProjectPayload payload,
+    public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectPayload payload,
                                                     @Parameter(description = "JWT token for the connected user", hidden = true)
                                                     @RequestHeader("Authorization") String authorizationHeader) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
@@ -37,7 +38,7 @@ public class ProjectController {
         return new ResponseEntity<>(projectDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
+    @GetMapping
     @Operation(summary = "Get all projects", description = "Retrieves a list of all projects.")
     public List<ProjectDto> getAllProjects() {
         return projectUseCases.getAllProjects().stream()
