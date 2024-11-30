@@ -6,6 +6,9 @@ import com.operis.project.core.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.project.core.service.adapter.in.rest.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +28,24 @@ public class ProjectController {
     private final JWTTokenService jwtTokenService;
 
     @PostMapping
-    @Operation(summary = "Create a new project", description = "Creates a new project with the provided details.")
+    @Operation(summary = "Create a new project", description = "Creates a new project with the provided details.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Project created successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProjectDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request - Invalid payload or missing required fields",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal Server Error - Unexpected error occurred",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    )
+            })
     public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectPayload payload,
                                                     @Parameter(description = "JWT token for the connected user", hidden = true)
                                                     @RequestHeader("Authorization") String authorizationHeader) {
