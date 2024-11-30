@@ -5,11 +5,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiError(Integer status, String message, List<String> details) {
+public record ApiError(Integer statusCode,
+                       String httpStatus,
+                       String message,
+                       List<String> details) {
 
     public ApiError {
-        if (status == null) {
+        if (statusCode == null) {
             throw new IllegalArgumentException("Status must not be null");
+        }
+        if (httpStatus == null) {
+            throw new IllegalArgumentException("Http Status must not be null");
         }
 
         if (message == null) {
@@ -17,7 +23,7 @@ public record ApiError(Integer status, String message, List<String> details) {
         }
     }
 
-    public ApiError(Integer status, String message) {
-        this(status, message, null);
+    public ApiError(Integer statusCode, String httStatus, String message) {
+        this(statusCode, httStatus, message, null);
     }
 }
