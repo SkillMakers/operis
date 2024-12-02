@@ -8,7 +8,7 @@ public interface UserSubscriptionRepository {
 
     void save(UserSubscription userSubscription);
 
-    void delete(String userSubscriptionId);
+    void delete(String userEmail);
 
     Optional<UserSubscription> find(String userEmail);
 }

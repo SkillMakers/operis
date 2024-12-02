@@ -1,5 +1,6 @@
 package com.operis.operis.subscription.service.adapter.in.rest;
 
+import com.operis.operis.subscription.service.adapter.in.rest.helper.JWTTokenService;
 import com.operis.operis.subscription.service.adapter.in.rest.model.CreateUserSubscriptionPayloadRecord;
 import com.operis.operis.subscription.service.adapter.in.rest.model.GetUserSubscriptionPayload;
 import com.operis.operis.subscription.service.adapter.in.rest.model.UserSubscriptionDto;
@@ -16,16 +17,20 @@ import org.springframework.web.bind.annotation.*;
 public class UserSubscriptionController {
 
     private final UserSubscriptionUseCases userSubscriptionUseCases;
+    private final JWTTokenService jwtTokenService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateUserSubscriptionPayloadRecord payload) {
-        userSubscriptionUseCases.subscribeUser(payload.toCommand());
+    public ResponseEntity<Void> subscribe(@RequestBody CreateUserSubscriptionPayloadRecord payload,
+                                          @RequestHeader("Authorization") String authorizationHeader) {
+        String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
+        userSubscriptionUseCases.subscribeUser(payload.toCommand(connectedUserEmail));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-        userSubscriptionUseCases.unsubscribe(id);
+    @DeleteMapping("/unsubscribe")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader) {
+        String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
+        userSubscriptionUseCases.unsubscribe(connectedUserEmail);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

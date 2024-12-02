@@ -23,10 +23,10 @@ public class JPAUserSubscriptionRepository implements UserSubscriptionRepository
 
     @Override
     @Transactional
-    public void delete(String userSubscriptionId) {
-        Optional<UserSubscriptionEntity> userSubscriptionEntity = jpaUserSubscriptionSpringDataRepository.findById(userSubscriptionId);
+    public void delete(String userEmail) {
+        Optional<UserSubscriptionEntity> userSubscriptionEntity = jpaUserSubscriptionSpringDataRepository.findById(userEmail);
         UserSubscriptionEntity entity = userSubscriptionEntity.orElseThrow(() ->
-                new RuntimeException("UserSubscriptionEntity not found for id: " + userSubscriptionId)
+                new RuntimeException("UserSubscriptionEntity not found for user: " + userEmail)
         );
         jpaUserSubscriptionSpringDataRepository.delete(entity);
 

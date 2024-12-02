@@ -9,8 +9,6 @@ import com.operis.subscription.code.model.port.out.persistence.SubscriptionRepos
 import com.operis.subscription.code.model.port.out.persistence.UserSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 public class UserSubscriptionService implements UserSubscriptionUseCases {
 
@@ -21,12 +19,12 @@ public class UserSubscriptionService implements UserSubscriptionUseCases {
     @Override
     public void subscribeUser(SubscribeUserCommand subscribeUserCommand) {
         Subscription subscription = subscriptionRepository.findById(subscribeUserCommand.subscriptionId());
-        userSubscriptionRepository.save(new UserSubscription(UUID.randomUUID().toString(), subscribeUserCommand.userEMail(), subscription));
+        userSubscriptionRepository.save(new UserSubscription(subscribeUserCommand.userEMail(), subscription));
     }
 
     @Override
-    public void unsubscribe(String userSubscriptionId) {
-        userSubscriptionRepository.delete(userSubscriptionId);
+    public void unsubscribe(String userEmail) {
+        userSubscriptionRepository.delete(userEmail);
     }
 
     @Override

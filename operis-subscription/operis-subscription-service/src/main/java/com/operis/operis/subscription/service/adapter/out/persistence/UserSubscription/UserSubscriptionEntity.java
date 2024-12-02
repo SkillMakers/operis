@@ -15,9 +15,7 @@ import lombok.NoArgsConstructor;
 public class UserSubscriptionEntity {
 
     @Id
-    private String id;
-
-    @Column(nullable = false)
+    @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
 
     @ManyToOne
@@ -26,13 +24,12 @@ public class UserSubscriptionEntity {
 
     public static UserSubscriptionEntity from(UserSubscription userSubscription) {
         return new UserSubscriptionEntity(
-                userSubscription.id(),
                 userSubscription.userEMail(),
                 SubscriptionEntity.from(userSubscription.subscription())
         );
     }
 
     public UserSubscription toDomain() {
-        return new UserSubscription(id, userEmail, subscription.toDomain());
+        return new UserSubscription(userEmail, subscription.toDomain());
     }
 }

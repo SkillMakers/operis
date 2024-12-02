@@ -8,7 +8,7 @@ public interface UserSubscriptionUseCases {
 
     void subscribeUser(SubscribeUserCommand subscribeUserCommand);
 
-    void unsubscribe(String userSubscriptionId);
+    void unsubscribe(String userEmail);
 
     UserSubscription get(GetUserSubscriptionsCommand command);
 }
