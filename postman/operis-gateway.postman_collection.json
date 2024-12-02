@@ -656,7 +656,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/user-subscriptions/853dde03-3367-4b95-b405-e40a631ec2f8",
+							"raw": "http://localhost:8080/api/user-subscriptions/unsubscribe",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -665,7 +665,7 @@
 							"path": [
 								"api",
 								"user-subscriptions",
-								"853dde03-3367-4b95-b405-e40a631ec2f8"
+								"unsubscribe"
 							]
 						}
 					},
@@ -707,7 +707,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"userEmail\": \"imad.test@gmail.com\",\r\n  \"subscriptionId\" : \"71608dbd-b7de-4160-99f9-03d41a670ebb\"\r\n}",
+							"raw": "{\r\n  \"subscriptionId\" : \"a860c8db-913d-4f62-aec8-c149ad6b226a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
