@@ -61,6 +61,12 @@
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version> <!-- Utilisez une version compatible -->
+            <scope>provided</scope> <!-- Indique que le conteneur d'application fournira l'implémentation -->
+        </dependency>
     </dependencies>
 
     <build>
