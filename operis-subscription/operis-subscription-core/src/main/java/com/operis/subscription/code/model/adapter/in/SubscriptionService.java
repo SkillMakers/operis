@@ -6,6 +6,7 @@ import com.operis.subscription.code.model.port.in.SubscriptionUseCases;
 import com.operis.subscription.code.model.port.out.persistence.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -22,5 +23,10 @@ public class SubscriptionService implements SubscriptionUseCases {
                         command.features()
                 )
         );
+    }
+
+    @Override
+    public List<Subscription> getAllSubscriptions() {
+        return subscriptionRepository.findAll();
     }
 }

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7591e32e-2cf3-4bb5-9009-13939a686e78",
+		"_postman_id": "d7aca4fa-3705-4493-9f4b-22842da2c168",
 		"name": "operis-gateway",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10651879"
+		"_exporter_id": "20192724"
 	},
 	"item": [
 		{
@@ -442,7 +442,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"projectId\": \"ec6a8657-4e32-4a99-ab4a-53d86a790ecf\",\n    \"newName\": \"Operis project updated1\"\n}",
+							"raw": "{\n    \"projectId\": \"ec6a8657-4e32-4a99-ab4a-53d86a790ecf\",\n    \"newName\": \"Operis project updated\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -478,7 +478,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"projectId\": \"ec6a8657-4e32-4a99-ab4a-53d86a790ecf\",\n    \"newDescription\": \"Design and develop a project management application for individuals and companies updated 1.\"\n}",
+							"raw": "{\n    \"projectId\": \"ec6a8657-4e32-4a99-ab4a-53d86a790ecf\",\n    \"newDescription\": \"Design and develop a project management application for individuals and companies updated.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -575,7 +575,7 @@
 					"response": []
 				},
 				{
-					"name": "Add project to task",
+					"name": "Add task to project",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -651,27 +651,6 @@
 			"name": "subscriptions",
 			"item": [
 				{
-					"name": "Unsusbscribe user",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/user-subscriptions/unsubscribe",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"user-subscriptions",
-								"unsubscribe"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create subscription",
 					"request": {
 						"method": "POST",
@@ -701,13 +680,59 @@
 					"response": []
 				},
 				{
+					"name": "Get all subscriptions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if (Array.isArray(response) && response.length > 0) {",
+									"    const firstSubscription = response[0];",
+									"    ",
+									"    const subscriptionId = firstSubscription.id;",
+									"",
+									"    //pm.environment.set(\"SUBSCRIPTION_ID\", subscriptionId);",
+									"    pm.globals.set(\"SUBSCRIPTION_ID\", subscriptionId);",
+									"",
+									"    console.log(`Subscription ID saved: ${subscriptionId}`);",
+									"} else {",
+									"    console.log(\"No subscriptions found in the response.\");",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/subscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Subscribe user",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"subscriptionId\" : \"a860c8db-913d-4f62-aec8-c149ad6b226a\"\r\n}",
+							"raw": "{\r\n  \"subscriptionId\" : \"{{SUBSCRIPTION_ID}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -724,6 +749,68 @@
 							"path": [
 								"api",
 								"user-subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unsusbscribe user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user-subscriptions/unsubscribe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user-subscriptions",
+								"unsubscribe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reports",
+			"item": [
+				{
+					"name": "Export",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/projects/{{PROJECT_ID}}/export?taskStatus=TODO&from=2024-08-01T10:00:00&to=2025-10-30T23:59:59",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"projects",
+								"{{PROJECT_ID}}",
+								"export"
+							],
+							"query": [
+								{
+									"key": "taskStatus",
+									"value": "TODO"
+								},
+								{
+									"key": "from",
+									"value": "2024-08-01T10:00:00"
+								},
+								{
+									"key": "to",
+									"value": "2025-10-30T23:59:59"
+								}
 							]
 						}
 					},

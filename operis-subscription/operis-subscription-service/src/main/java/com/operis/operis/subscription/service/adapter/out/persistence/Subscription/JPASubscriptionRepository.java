@@ -5,6 +5,8 @@ import com.operis.subscription.code.model.port.out.persistence.SubscriptionRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class JPASubscriptionRepository implements SubscriptionRepository {
@@ -23,5 +25,12 @@ public class JPASubscriptionRepository implements SubscriptionRepository {
         return jpaSubscriptionSpringDataRepository.findById(subscriptionId)
                 .map(SubscriptionEntity::toDomain)
                 .orElseThrow(() -> new RuntimeException("Subscription not found"));
+    }
+
+    @Override
+    public List<Subscription> findAll() {
+        return jpaSubscriptionSpringDataRepository.findAll()
+                .stream().map(SubscriptionEntity::toDomain)
+                .toList();
     }
 }
