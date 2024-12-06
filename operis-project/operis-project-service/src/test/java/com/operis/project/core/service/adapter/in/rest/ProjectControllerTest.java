@@ -206,7 +206,7 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
                     // Then
                     .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.status", is(NOT_FOUND.value())))
+                    .andExpect(jsonPath("$.statusCode", is(NOT_FOUND.value())))
                     .andExpect(jsonPath("$.message", is("Project not found")));
         }
 
@@ -229,7 +229,7 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
                     // Then
                     .andExpect(status().isConflict())
-                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.statusCode", is(CONFLICT.value())))
                     .andExpect(jsonPath("$.message", is("Task cannot be assigned to a non-member")));
         }
 
@@ -253,7 +253,7 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(addTaskToProjectPayload)))
                     // Then
                     .andExpect(status().isConflict())
-                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.statusCode", is(CONFLICT.value())))
                     .andExpect(jsonPath("$.message", is("Task cannot be created by a non-member")));
         }
     }
@@ -296,7 +296,7 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(changeProjectMembersPayload)))
                     // Then
                     .andExpect(status().isConflict())
-                    .andExpect(jsonPath("$.status", is(CONFLICT.value())))
+                    .andExpect(jsonPath("$.statusCode", is(CONFLICT.value())))
                     .andExpect(jsonPath("$.message", is("Some members do not have an user account : [imad.test@gmail.com]")));
         }
 

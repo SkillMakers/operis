@@ -1,7 +1,6 @@
 package com.operis.project.core.service.adapter.in.rest.model;
 
 import com.operis.project.core.application.project.model.CreateProjectCommand;
-import com.operis.project.core.application.project.model.ProjectOwner;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
@@ -14,7 +13,7 @@ public record CreateProjectPayload(
         return new CreateProjectCommand(
                 name(),
                 description(),
-                new ProjectOwner(connectedUserEmail)
+                connectedUserEmail
         );
     }
 }

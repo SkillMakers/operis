@@ -1,42 +1,45 @@
 package com.operis.project.core.application.project.model;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
-public record Project(
-        String id,
-        ProjectOwner owner,
-        String name,
-        String description,
-        LocalDateTime createdAt,
-        List<ProjectTask> tasks,
-        List<ProjectMember> members
-) {
+@Data
+public final class Project {
+    private String id;
+    private ProjectOwner owner;
+    private String name;
+    private String description;
+    private LocalDateTime createdAt;
+    private List<ProjectTask> tasks;
+    private List<ProjectMember> members;
+
+    public Project(
+            String id,
+            ProjectOwner owner,
+            String name,
+            String description,
+            LocalDateTime createdAt,
+            List<ProjectTask> tasks,
+            List<ProjectMember> members
+    ) {
+        this.id = id == null ? UUID.randomUUID().toString() : id;
+        this.owner = owner;
+        this.name = requireNonBlank(name, "Project name cannot be null or empty");
+        this.description = description;
+        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+        this.tasks = tasks == null ? new ArrayList<>() : tasks;
+        this.members = members == null ? Arrays.asList(new ProjectMember(owner.userEmail())) : members;
+    }
 
     public Project(String id, ProjectOwner owner, String name, String description, List<ProjectTask> tasks, List<ProjectMember> members) {
-        this(
-                Objects.requireNonNull(id, "id must not be null"),
-                Objects.requireNonNull(owner, "owner must not be null"),
-                Objects.requireNonNull(name, "name must not be null"),
-                description,
-                LocalDateTime.now(),
-                tasks == null ? new ArrayList<>() : tasks,
-                members == null ? Arrays.asList(new ProjectMember(owner.userEmail())) : members
-        );
+        this(id, owner, name, description, null, tasks, members);
     }
 
     public Project(String id, ProjectOwner owner, String name, String description) {
         this(id, owner, name, description, null, null);
-    }
-
-    public Project(Project project, boolean archived) {
-        this(project.id(), project.owner(), project.name(), project.description(), project.createdAt(),
-                project.tasks(), project.members());
-
     }
 
     public Project(Project project, List<ProjectMember> members) {
@@ -53,6 +56,13 @@ public record Project(
                         .toList()
         );
     }
+
+    public static String requireNonBlank(String obj, String message) {
+        if (obj == null || obj.isBlank())
+            throw new IllegalArgumentException(message);
+        return obj;
+    }
+
 
     public Project copyAppendingTask(ProjectTask task) {
         return new Project(
@@ -83,4 +93,64 @@ public record Project(
 
         tasks.add(task);
     }
+
+    public String id() {
+        return id;
+    }
+
+    public ProjectOwner owner() {
+        return owner;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public List<ProjectTask> tasks() {
+        return tasks;
+    }
+
+    public List<ProjectMember> members() {
+        return members;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (Project) obj;
+        return Objects.equals(this.id, that.id) &&
+                Objects.equals(this.owner, that.owner) &&
+                Objects.equals(this.name, that.name) &&
+                Objects.equals(this.description, that.description) &&
+                Objects.equals(this.createdAt, that.createdAt) &&
+                Objects.equals(this.tasks, that.tasks) &&
+                Objects.equals(this.members, that.members);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, owner, name, description, createdAt, tasks, members);
+    }
+
+    @Override
+    public String toString() {
+        return "Project[" +
+                "id=" + id + ", " +
+                "owner=" + owner + ", " +
+                "name=" + name + ", " +
+                "description=" + description + ", " +
+                "createdAt=" + createdAt + ", " +
+                "tasks=" + tasks + ", " +
+                "members=" + members + ']';
+    }
+
 }

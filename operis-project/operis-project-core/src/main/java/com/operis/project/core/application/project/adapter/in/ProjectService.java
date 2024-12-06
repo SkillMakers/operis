@@ -24,7 +24,7 @@ public class ProjectService implements ProjectUseCases {
     public Project createProject(CreateProjectCommand command) {
         return projectRepository.save(
                 new Project(UUID.randomUUID().toString(),
-                        command.owner(),
+                        new ProjectOwner(command.ownerEmail()),
                         command.name(),
                         command.description()
                 )

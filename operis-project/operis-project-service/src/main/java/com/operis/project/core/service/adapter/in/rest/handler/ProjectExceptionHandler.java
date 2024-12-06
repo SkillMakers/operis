@@ -1,5 +1,7 @@
 package com.operis.project.core.service.adapter.in.rest.handler;
 
+import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
+import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
 import com.operis.project.core.service.adapter.in.rest.model.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,18 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<Object> handleProjectNotFoundException(ProjectNotFoundException ex, WebRequest request) {
+        var body = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), ex.getMessage());
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(IllegalProjectMemberException.class)
+    public ResponseEntity<Object> handleIllegalProjectMemberException(IllegalProjectMemberException ex, WebRequest request) {
+        var body = new ApiError(HttpStatus.CONFLICT.value(), ex.getMessage(), ex.getMessage());
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

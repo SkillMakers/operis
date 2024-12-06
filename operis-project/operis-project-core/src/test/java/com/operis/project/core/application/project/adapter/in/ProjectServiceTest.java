@@ -12,6 +12,8 @@ import com.operis.project.core.application.task.port.out.persistence.TaskReposit
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,7 +50,7 @@ class ProjectServiceTest {
             var project = new CreateProjectCommand(
                     "Project name",
                     "Project description",
-                    new ProjectOwner("ronald.test@gmail.com")
+                    "ronald.test@gmail.com"
             );
 
             // When
@@ -67,6 +69,28 @@ class ProjectServiceTest {
                     () -> assertThatList(projectArgument.members()).containsExactlyInAnyOrder(new ProjectMember("ronald.test@gmail.com")),
                     () -> assertNotNull(projectArgument.createdAt())
             );
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "'', ronald.test@gmail.com, Project name cannot be null or empty",
+                "'  ', ronald.test@gmail.com, Project name cannot be null or empty",
+                ", ronald.test@gmail.com, Project name cannot be null or empty",
+                "Operis, '', Project owner cannot be null or empty",
+                "operis, '  ', Project owner cannot be null or empty",
+                "Operis, , Project owner cannot be null or empty"
+        })
+        void shouldThrowIllegalArgumentExceptionGivenInvalidProjectFields(String name, String owner, String expectedMessage) {
+            // GIVEN
+            CreateProjectCommand command = new CreateProjectCommand(
+                    name, "description", owner);
+
+            // WHEN
+            var actualException = assertThrows(IllegalArgumentException.class,
+                    () -> projectService.createProject(command));
+
+            // THEN
+            assertEquals(expectedMessage, actualException.getMessage());
         }
     }
 

@@ -4,7 +4,7 @@ public record ProjectOwner(String userEmail) {
 
     public ProjectOwner {
         if (isUserEmailNullOrBlank(userEmail)) {
-            throw new IllegalArgumentException("userEmail must not be null or blank");
+            throw new IllegalArgumentException("Project owner cannot be null or empty");
         }
     }
 
