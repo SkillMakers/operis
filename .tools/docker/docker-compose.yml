@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   eureka:
-    image: ibouakl/operis-discovery:1.0-SNAPSHOT
+    image: operis-discovery:1.0-SNAPSHOT
     container_name: operis-discovery
     ports:
       - "8761:8761"
@@ -15,7 +15,7 @@ services:
       retries: 5
 
   config-server:
-    image: ibouakl/operis-config:1.0-SNAPSHOT
+    image: operis-config:1.0-SNAPSHOT
     container_name: operis-config-server
     ports:
       - "8888:8888"
@@ -32,7 +32,7 @@ services:
       retries: 5
 
   user-account-service:
-    image: ibouakl/operis-user-account-service:1.0-SNAPSHOT
+    image: operis-user-account-service:1.0-SNAPSHOT
     container_name: operis-user-account-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
@@ -49,7 +49,7 @@ services:
         condition: service_healthy
 
   user-profile-service1:
-    image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
+    image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service1
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
@@ -68,7 +68,7 @@ services:
       - "8083:8083" # Optional, for local access
 
   user-profile-service2:
-    image: ibouakl/operis-user-profile-service:1.0-SNAPSHOT
+    image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service2
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
@@ -87,7 +87,7 @@ services:
       - "8085:8083" # Optional, for local access
 
   project-service:
-    image: ibouakl/operis-project-service:1.0-SNAPSHOT
+    image: operis-project-service:1.0-SNAPSHOT
     container_name: operis-project-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
@@ -104,7 +104,7 @@ services:
         condition: service_healthy
 
   subscription-service:
-    image: ibouakl/operis-subscription-service:1.0-SNAPSHOT
+    image: operis-subscription-service:1.0-SNAPSHOT
     container_name: operis-subscription-service
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
@@ -123,7 +123,7 @@ services:
       - "8084:8084" # Optional, for local access
 
   gateway:
-    image: ibouakl/operis-gateway:1.0-SNAPSHOT
+    image: operis-gateway:1.0-SNAPSHOT
     container_name: operis-gateway
     ports:
       - "8080:8080"
