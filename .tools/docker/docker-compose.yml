@@ -132,10 +132,10 @@ services:
     networks:
       - mynetwork
     depends_on:
-      - eureka
-      - user-account-service
-      - project-service
-      - config-server
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
 
   useraccountdb:
     image: mysql:latest
