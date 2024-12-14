@@ -5,5 +5,10 @@ spring:
   application:
     name: operis-user-account-service
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:/
+  cloud:
+    config:
+      discovery:
+        service-id: operis-config-server
+        enabled: true
 
