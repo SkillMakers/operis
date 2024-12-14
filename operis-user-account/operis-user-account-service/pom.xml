@@ -13,6 +13,7 @@
 
     <properties>
         <operis.user.model.version>1.0-SNAPSHOT</operis.user.model.version>
+        <main.class>com.operis.UserAccountServiceApplication</main.class>
     </properties>
 
     <dependencies>
@@ -185,38 +186,10 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <mainClass>com.operis.UserAccountServiceApplication</mainClass>
-                            <layout>JAR</layout>
-                        </configuration>
                     </plugin>
-                    <!-- Plugin pour construire l'image Docker -->
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.40.2</version>
-                        <executions>
-                            <execution>
-                                <id>build-image</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <images>
-                                <image>
-                                    <name>ibouakl/${project.artifactId}:${project.version}</name>
-                                    <build>
-                                        <dockerFile>${project.basedir}/Dockerfile</dockerFile>
-                                        <args>
-                                            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                                        </args>
-                                    </build>
-                                </image>
-                            </images>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
