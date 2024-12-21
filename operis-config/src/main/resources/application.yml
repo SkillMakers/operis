@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/ibouakl/operis-config-repo
           username: ibouakl
-          password: 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
+          password: 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
 
 eureka:
   client:
