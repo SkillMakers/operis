@@ -6,4 +6,4 @@ ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 
 # Définir le point d'entrée pour l'exécution de l'application
-ENTRYPOINT ["java", "-jar", "/app.jar","--spring.profiles.active=docker"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]

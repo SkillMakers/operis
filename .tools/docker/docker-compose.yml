@@ -1,142 +1,6 @@
 version: '3.8'
 
 services:
-  eureka:
-    image: operis-discovery:1.0-SNAPSHOT
-    container_name: operis-discovery
-    ports:
-      - "8761:8761"
-    networks:
-      - mynetwork
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  config-server:
-    image: operis-config:1.0-SNAPSHOT
-    container_name: operis-config-server
-    ports:
-      - "8888:8888"
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-    networks:
-      - mynetwork
-    depends_on:
-      - eureka
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  user-account-service:
-    image: operis-user-account-service:1.0-SNAPSHOT
-    container_name: operis-user-account-service
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://useraccountdb:3306/operis-user-account
-      SPRING_DATASOURCE_USERNAME: root
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      useraccountdb:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-
-  user-profile-service1:
-    image: operis-user-profile-service:1.0-SNAPSHOT
-    container_name: operis-user-profile-service1
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
-      SPRING_DATASOURCE_USERNAME: root
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      userprofiledb:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-    ports:
-      - "8083:8083" # Optional, for local access
-
-  user-profile-service2:
-    image: operis-user-profile-service:1.0-SNAPSHOT
-    container_name: operis-user-profile-service2
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
-      SPRING_DATASOURCE_USERNAME: root
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      userprofiledb:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-    ports:
-      - "8085:8083" # Optional, for local access
-
-  project-service:
-    image: operis-project-service:1.0-SNAPSHOT
-    container_name: operis-project-service
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://projectdb:3306/operis-project
-      SPRING_DATASOURCE_USERNAME: root
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      projectdb:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-
-  subscription-service:
-    image: operis-subscription-service:1.0-SNAPSHOT
-    container_name: operis-subscription-service
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://susbcriptiondb:3306/operis-subscription
-      SPRING_DATASOURCE_USERNAME: root
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      susbcriptiondb:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-    ports:
-      - "8084:8084" # Optional, for local access
-
-  gateway:
-    image: operis-gateway:1.0-SNAPSHOT
-    container_name: operis-gateway
-    ports:
-      - "8080:8080"
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-    networks:
-      - mynetwork
-    depends_on:
-      eureka:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-
   useraccountdb:
     image: mysql:latest
     container_name: useraccountdb
@@ -198,7 +62,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: operis-user-profile
     ports:
-      - "3309:3306"  # Optional, for local access
+      - "3309:3306" # Optional, for local access
     networks:
       - mynetwork
     volumes:
@@ -208,6 +72,146 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  eureka:
+    image: operis-discovery:1.0-SNAPSHOT
+    container_name: operis-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - mynetwork
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  config-server:
+    image: operis-config:1.0-SNAPSHOT
+    container_name: operis-config-server
+    ports:
+      - "8888:8888"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+    networks:
+      - mynetwork
+    depends_on:
+      eureka:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-account-service:
+    image: operis-user-account-service:1.0-SNAPSHOT
+    container_name: operis-user-account-service
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://useraccountdb:3306/operis-user-account
+      SPRING_DATASOURCE_USERNAME: root
+    ports:
+      - "8081:8081" # Optional, for local access
+    networks:
+      - mynetwork
+    depends_on:
+      useraccountdb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: always
+
+  user-profile-service1:
+    image: operis-user-profile-service:1.0-SNAPSHOT
+    container_name: operis-user-profile-service1
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
+      SPRING_DATASOURCE_USERNAME: root
+    ports:
+      - "8083:8083" # Optional, for local access
+    networks:
+      - mynetwork
+    depends_on:
+      userprofiledb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: always
+
+  user-profile-service2:
+    image: operis-user-profile-service:1.0-SNAPSHOT
+    container_name: operis-user-profile-service2
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
+      SPRING_DATASOURCE_USERNAME: root
+    ports:
+      - "8085:8083" # Optional, for local access
+    networks:
+      - mynetwork
+    depends_on:
+      userprofiledb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: always
+
+  project-service:
+    image: operis-project-service:1.0-SNAPSHOT
+    container_name: operis-project-service
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://projectdb:3306/operis-project
+      SPRING_DATASOURCE_USERNAME: root
+    ports:
+      - "8082:8082" # Optional, for local access
+    networks:
+      - mynetwork
+    depends_on:
+      projectdb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: always
+
+  subscription-service:
+    image: operis-subscription-service:1.0-SNAPSHOT
+    container_name: operis-subscription-service
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://susbcriptiondb:3306/operis-subscription
+      SPRING_DATASOURCE_USERNAME: root
+    ports:
+      - "8084:8084" # Optional, for local access
+    networks:
+      - mynetwork
+    depends_on:
+      susbcriptiondb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    restart: always
+
+  gateway:
+    image: operis-gateway:1.0-SNAPSHOT
+    container_name: operis-gateway
+    environment:
+      TRACING_URL: http://jeager:4317
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      config-server:
+        condition: service_healthy
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -219,7 +223,6 @@ services:
       COLLECTOR_OTLP_ENABLED: "true"
     networks:
       - mynetwork
-
 
 networks:
   mynetwork:

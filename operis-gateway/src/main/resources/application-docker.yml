@@ -1,6 +1,0 @@
-tracing:
-  url:  http://jeager:4317
-
-spring:
-  config:
-    import: optional:configserver:http://operis-config-server:8888
