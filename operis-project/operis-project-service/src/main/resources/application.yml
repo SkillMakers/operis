@@ -12,11 +12,10 @@ spring:
         service-id: operis-config-server
         enabled: true
 
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-  level:
-    org.springframework.cloud.loadbalancer: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
 springdoc:
   api-docs:

@@ -74,6 +74,12 @@
             <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
 
+        <!-- Actuator dependencies  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Tests dependencies  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
