@@ -37,9 +37,9 @@ services:
       timeout: 5s
       retries: 5
 
-  susbcriptiondb:
+  subscriptiondb:
     image: mysql:latest
-    container_name: susbcriptiondb
+    container_name: subscriptiondb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: operis-subscription
@@ -48,7 +48,7 @@ services:
     networks:
       - mynetwork
     volumes:
-      - susbcriptiondb-data:/var/lib/mysql
+      - subscriptiondb-data:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--silent" ]
       interval: 10s
@@ -108,7 +108,7 @@ services:
     image: operis-user-account-service:1.0-SNAPSHOT
     container_name: operis-user-account-service
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://useraccountdb:3306/operis-user-account
       SPRING_DATASOURCE_USERNAME: root
@@ -127,7 +127,7 @@ services:
     image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service1
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
       SPRING_DATASOURCE_USERNAME: root
@@ -146,7 +146,7 @@ services:
     image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service2
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
       SPRING_DATASOURCE_USERNAME: root
@@ -165,7 +165,7 @@ services:
     image: operis-project-service:1.0-SNAPSHOT
     container_name: operis-project-service
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://projectdb:3306/operis-project
       SPRING_DATASOURCE_USERNAME: root
@@ -184,16 +184,16 @@ services:
     image: operis-subscription-service:1.0-SNAPSHOT
     container_name: operis-subscription-service
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
-      SPRING_DATASOURCE_URL: jdbc:mysql://susbcriptiondb:3306/operis-subscription
+      SPRING_DATASOURCE_URL: jdbc:mysql://subscriptiondb:3306/operis-subscription
       SPRING_DATASOURCE_USERNAME: root
     ports:
       - "8084:8084" # Optional, for local access
     networks:
       - mynetwork
     depends_on:
-      susbcriptiondb:
+      subscriptiondb:
         condition: service_healthy
       config-server:
         condition: service_healthy
@@ -203,7 +203,7 @@ services:
     image: operis-gateway:1.0-SNAPSHOT
     container_name: operis-gateway
     environment:
-      TRACING_URL: http://jeager:4317
+      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
     ports:
       - "8080:8080"
@@ -232,4 +232,4 @@ volumes:
   useraccountdb-data:
   projectdb-data:
   userprofiledb-data:
-  susbcriptiondb-data:
+  subscriptiondb-data:
