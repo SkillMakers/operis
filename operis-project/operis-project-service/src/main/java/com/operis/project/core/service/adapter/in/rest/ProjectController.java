@@ -38,12 +38,12 @@ public class ProjectController {
                     @ApiResponse(
                             responseCode = "400",
                             description = "Bad Request - Invalid payload or missing required fields",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProjectApiError.class))
                     ),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Internal Server Error - Unexpected error occurred",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProjectApiError.class))
                     )
             })
     public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectPayload payload,

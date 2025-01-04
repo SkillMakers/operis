@@ -27,4 +27,11 @@ public interface UserProfileFeignClient {
                     .toList();
         }
     }
+
+    record UserProfileApiError(Integer statusCode,
+                               String httpStatus,
+                               String message,
+                               List<String> details) {
+
+    }
 }

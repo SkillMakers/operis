@@ -1,16 +1,16 @@
-package com.operis.project.core.service.adapter.in.rest.model;
+package com.operis.user.profile.core.service.adapter.in.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiError(Integer statusCode,
-                       String httpStatus,
-                       String message,
-                       List<String> details) {
+public record UserProfileApiError(Integer statusCode,
+                                  String httpStatus,
+                                  String message,
+                                  List<String> details) {
 
-    public ApiError {
+    public UserProfileApiError {
         if (statusCode == null) {
             throw new IllegalArgumentException("Status must not be null");
         }
@@ -23,7 +23,7 @@ public record ApiError(Integer statusCode,
         }
     }
 
-    public ApiError(Integer statusCode, String httStatus, String message) {
+    public UserProfileApiError(Integer statusCode, String httStatus, String message) {
         this(statusCode, httStatus, message, null);
     }
 }

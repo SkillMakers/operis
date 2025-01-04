@@ -2,7 +2,8 @@ package com.operis.project.core.service.adapter.in.rest.handler;
 
 import com.operis.project.core.application.project.model.exception.IllegalProjectMemberException;
 import com.operis.project.core.application.project.model.exception.ProjectNotFoundException;
-import com.operis.project.core.service.adapter.in.rest.model.ApiError;
+import com.operis.project.core.service.adapter.in.rest.model.ProjectApiError;
+import com.operis.project.core.service.adapter.out.http.model.UserProfileApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,13 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ProjectNotFoundException.class)
     public ResponseEntity<Object> handleProjectNotFoundException(ProjectNotFoundException ex, WebRequest request) {
-        var body = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), ex.getMessage());
+        var body = new ProjectApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(IllegalProjectMemberException.class)
     public ResponseEntity<Object> handleIllegalProjectMemberException(IllegalProjectMemberException ex, WebRequest request) {
-        var body = new ApiError(HttpStatus.CONFLICT.value(), ex.getMessage(), ex.getMessage());
+        var body = new ProjectApiError(HttpStatus.CONFLICT.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
@@ -40,10 +41,16 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             fieldErrors.add(error.getDefaultMessage());
         }
-        ApiError body = new ApiError(status.value(), HttpStatus.valueOf(status.value()).name(), "Validation failed for one or more fields.",
+        ProjectApiError body = new ProjectApiError(status.value(), HttpStatus.valueOf(status.value()).name(), "Validation failed for one or more fields.",
                 fieldErrors);
 
         return handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    @ExceptionHandler(UserProfileApiException.class)
+    public ResponseEntity<Object> handleUserProfileApiException(UserProfileApiException ex, WebRequest request) {
+        var body = new ProjectApiError(ex.getApiError().statusCode(), ex.getApiError().httpStatus(), ex.getApiError().message());
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatusCode.valueOf(ex.getApiError().statusCode()), request);
     }
 
     @ExceptionHandler(Exception.class)
@@ -55,8 +62,8 @@ public class ProjectExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         log.error("An error occurred while processing the request.", ex);
 
-        if (!(body instanceof ApiError)) {
-            body = new ApiError(statusCode.value(), HttpStatus.valueOf(statusCode.value()).name(), ex.getMessage());
+        if (!(body instanceof ProjectApiError)) {
+            body = new ProjectApiError(statusCode.value(), HttpStatus.valueOf(statusCode.value()).name(), ex.getMessage());
         }
 
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);

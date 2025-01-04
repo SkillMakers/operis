@@ -1,8 +1,8 @@
 package com.operis.project.core.service.adapter.in.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.operis.project.core.service.adapter.in.rest.model.ApiError;
 import com.operis.project.core.service.adapter.in.rest.model.CreateProjectPayload;
+import com.operis.project.core.service.adapter.in.rest.model.ProjectApiError;
 import com.operis.project.core.service.adapter.in.rest.model.ProjectDto;
 import com.operis.project.core.service.adapter.out.persistence.project.JPAProjectSpringDataRepository;
 import org.junit.jupiter.api.Assertions;
@@ -89,8 +89,8 @@ class ProjectControllerIntegrationTest {
                 .andReturn().getResponse();
 
         // THEN
-        ApiError apiError = objectMapper.readValue(response.getContentAsString(), ApiError.class);
-        assertEquals("Error while parsing JWT token", apiError.message());
+        ProjectApiError projectApiError = objectMapper.readValue(response.getContentAsString(), ProjectApiError.class);
+        assertEquals("Error while parsing JWT token", projectApiError.message());
     }
 
     @Test
@@ -107,7 +107,7 @@ class ProjectControllerIntegrationTest {
                 .andReturn().getResponse();
 
         // THEN
-        ApiError apiError = objectMapper.readValue(response.getContentAsString(), ApiError.class);
-        assertEquals("Required request header 'Authorization' for method parameter type String is not present", apiError.message());
+        ProjectApiError projectApiError = objectMapper.readValue(response.getContentAsString(), ProjectApiError.class);
+        assertEquals("Required request header 'Authorization' for method parameter type String is not present", projectApiError.message());
     }
 }
