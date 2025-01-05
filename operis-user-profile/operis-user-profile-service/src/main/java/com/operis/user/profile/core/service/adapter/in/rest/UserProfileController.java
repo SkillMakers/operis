@@ -49,8 +49,9 @@ public class UserProfileController {
 
     @PostMapping("/find")
     public ResponseEntity<List<UserProfileDto>> getUserProfilesFromEmails(
-            @RequestBody GetUserProfilesFromEmailsPayload payload) {
-        log.info("getUserProfilesFromEmails payload: {}", payload);
+            @RequestBody GetUserProfilesFromEmailsPayload payload,
+            @RequestHeader(value = "X-Correlation-ID", required = false) String correlationId) {
+        log.info("Received X-Correlation-ID: {}", correlationId);
         List<UserProfileDto> userProfileDTO = userProfileMapper.toDto(
                 userProfileUseCases.findByEmails(payload.userProfilesEmails())
         );
