@@ -1,6 +1,6 @@
 package com.operis.user.profile.core.service.config;
 
-import com.operis.user.profile.core.service.interceptor.CorrelationIdInterceptor;
+import com.operis.user.profile.core.service.interceptor.UserProfileCorrelationIdInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    private CorrelationIdInterceptor correlationIdInterceptor;
+    private UserProfileCorrelationIdInterceptor userProfileCorrelationIdInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(correlationIdInterceptor);
+        registry.addInterceptor(userProfileCorrelationIdInterceptor);
     }
 }

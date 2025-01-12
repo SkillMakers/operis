@@ -5,30 +5,42 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+
+/**
+ * Filtre global du Gateway pour gérer et propager le Correlation ID dans les requêtes et les logs.
+ */
 @Component
-public class CorrelationIdReactiveFilter implements GlobalFilter, Ordered {
+public class GatewayCorrelationIdFilter implements GlobalFilter, Ordered {
 
     private static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
 
+    /**
+     * Méthode principale du filtre, exécutée pour chaque requête.
+     *
+     * @param exchange l'échange actuel contenant la requête et la réponse
+     * @param chain    la chaîne de filtres à exécuter
+     * @return un Mono<Void> indiquant l'état de traitement
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-        ServerHttpResponse response = exchange.getResponse();
 
-        // Récupérer ou générer un Correlation ID
+        // Récupère la requête entrante
+        ServerHttpRequest request = exchange.getRequest();
+
+        // Cherche un Correlation ID dans les en-têtes de la requête
         String correlationId = request.getHeaders().getFirst(CORRELATION_ID_HEADER);
         if (correlationId == null || correlationId.isEmpty()) {
+            // Génère un Correlation ID si aucun n'est présent
             correlationId = UUID.randomUUID().toString();
         }
 
-        // Ajouter le Correlation ID au MDC pour les logs
+        // Ajoute le Correlation ID au MDC (Mapped Diagnostic Context) pour les logs
         MDC.put(CORRELATION_ID_HEADER, correlationId);
 
         // Ajouter ou propager le Correlation ID dans les en-têtes des requêtes vers les services en aval
@@ -39,15 +51,20 @@ public class CorrelationIdReactiveFilter implements GlobalFilter, Ordered {
         // Créer un échange modifié avec la nouvelle requête
         ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
 
-        // Continuer la chaîne de filtres
+        // Continue le traitement de la requête via la chaîne de filtres
         return chain.filter(mutatedExchange).doFinally(signalType -> {
-            // Nettoyer le MDC après la requête
+            // Nettoie le MDC après le traitement de la requête
             MDC.clear();
         });
     }
 
+    /**
+     * Définit l'ordre d'exécution du filtre.
+     *
+     * @return la priorité du filtre
+     */
     @Override
     public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE; // S'assurer que ce filtre est exécuté en premier
+        return Ordered.HIGHEST_PRECEDENCE; // Exécuter ce filtre en priorité
     }
 }
