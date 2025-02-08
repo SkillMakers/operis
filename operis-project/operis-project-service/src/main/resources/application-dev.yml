@@ -6,6 +6,3 @@ spring:
     config:
       discovery:
         enabled: false
-
-tracing:
-  url: http://localhost:4317

@@ -22,16 +22,5 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
-management:
-  tracing:
-    sampling:
-      probability: 0.0  # Désactive le sampling pour le profil de test
-  otlp:
-    tracing:
-      endpoint:
-
-tracing:
-  url: http://localhost:4317
-
 code:
   secret: mAvsZD2KqE2Kv6VpF+VkN1P3PT+2uq5z0g2ZxF0StSc=

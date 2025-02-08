@@ -20,12 +20,6 @@ spring:
             - Path=/api/tasks/**,/api/projects/**
           filters:
             - AddRequestHeader=Project-Request, Gateway
-management:
-  tracing:
-    sampling:
-      probability: 1.0
-tracing:
-  url: http://localhost:4317
 
 eureka:
   client:
@@ -38,7 +32,5 @@ code:
 logging:
   level:
     root: DEBUG
-    io.jaegertracing: DEBUG
-    io.opentracing: DEBUG
     org.springframework: DEBUG
     org.springframework.web: DEBUG

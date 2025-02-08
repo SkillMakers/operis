@@ -108,7 +108,6 @@ services:
     image: operis-user-account-service:1.0-SNAPSHOT
     container_name: operis-user-account-service
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://useraccountdb:3306/operis-user-account
       SPRING_DATASOURCE_USERNAME: root
@@ -127,7 +126,6 @@ services:
     image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service1
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
       SPRING_DATASOURCE_USERNAME: root
@@ -146,7 +144,6 @@ services:
     image: operis-user-profile-service:1.0-SNAPSHOT
     container_name: operis-user-profile-service2
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://userprofiledb:3306/operis-user-profile
       SPRING_DATASOURCE_USERNAME: root
@@ -165,7 +162,6 @@ services:
     image: operis-project-service:1.0-SNAPSHOT
     container_name: operis-project-service
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://projectdb:3306/operis-project
       SPRING_DATASOURCE_USERNAME: root
@@ -184,7 +180,6 @@ services:
     image: operis-subscription-service:1.0-SNAPSHOT
     container_name: operis-subscription-service
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://subscriptiondb:3306/operis-subscription
       SPRING_DATASOURCE_USERNAME: root
@@ -203,7 +198,6 @@ services:
     image: operis-gateway:1.0-SNAPSHOT
     container_name: operis-gateway
     environment:
-      TRACING_URL: http://jaeger:4317
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://operis-discovery:8761/eureka/
     ports:
       - "8080:8080"
@@ -212,17 +206,6 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - "16686:16686" # Jaeger UI
-      - "4317:4317" # OpenTelemetry collector grpc
-    environment:
-      COLLECTOR_OTLP_ENABLED: "true"
-    networks:
-      - mynetwork
 
 networks:
   mynetwork:
