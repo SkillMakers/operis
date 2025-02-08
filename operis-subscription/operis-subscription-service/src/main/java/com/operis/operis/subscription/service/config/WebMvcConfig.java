@@ -1,6 +1,6 @@
-package com.operis.project.core.service.config;
+package com.operis.operis.subscription.service.config;
 
-import com.operis.project.core.service.interceptor.MDCProjectCorrelationIdInterceptor;
+import com.operis.operis.subscription.service.interceptor.MDCSubscriptionCorrelationIdInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    private MDCProjectCorrelationIdInterceptor correlationIdInterceptor;
+    private MDCSubscriptionCorrelationIdInterceptor correlationIdInterceptor;
 
     /**
      * Méthode pour enregistrer les intercepteurs dans le registre.

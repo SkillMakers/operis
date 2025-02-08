@@ -29,24 +29,24 @@ public class GatewayCorrelationIdFilter implements GlobalFilter, Ordered {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
-        // Récupère la requête entrante
         ServerHttpRequest request = exchange.getRequest();
 
-        // Cherche un Correlation ID dans les en-têtes de la requête
         String correlationId = request.getHeaders().getFirst(CORRELATION_ID_HEADER);
         if (correlationId == null || correlationId.isEmpty()) {
-            // Génère un Correlation ID si aucun n'est présent
             correlationId = UUID.randomUUID().toString();
         }
 
         // Ajoute le Correlation ID au MDC (Mapped Diagnostic Context) pour les logs
         MDC.put(CORRELATION_ID_HEADER, correlationId);
 
-        // Ajouter ou propager le Correlation ID dans les en-têtes des requêtes vers les services en aval
+        // Ajouter le Correlation ID dans les headers des requêtes vers les services en aval
+        // ServerHttpRequest est immutable, donc nous devons créer une nouvelle instance
         ServerHttpRequest mutatedRequest = request.mutate()
                 .header(CORRELATION_ID_HEADER, correlationId)
                 .build();
+
+        // Ajouter le Correlation ID dans la réponse (la response n'est pas immutable)
+        exchange.getResponse().getHeaders().add(CORRELATION_ID_HEADER, correlationId);
 
         // Créer un échange modifié avec la nouvelle requête
         ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
