@@ -7,23 +7,21 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import com.operis.dto.LoginResponseDTO;
+import com.operis.dto.UserAccountCredentialsPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,19 +35,15 @@ public class AuthController {
 
     @RequestMapping("/login")
     @PostMapping
-    public Map<String, String> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody UserAccountCredentialsPayload credentialsPayload) {
         try {
-            String email = credentials.get("email");
-            String password = credentials.get("password");
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
+                    new UsernamePasswordAuthenticationToken(credentialsPayload.email(), credentialsPayload.password()));
             User user = (User) authentication.getPrincipal();
             String token = generateToken(user.getUsername());
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            return response;
-        } catch (AuthenticationException  | JOSEException e) {
-            throw new RuntimeException("Invalid login credentials", e);
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        } catch (JOSEException e) {
+            throw new RuntimeException("Error while generating token", e);
         }
     }
 

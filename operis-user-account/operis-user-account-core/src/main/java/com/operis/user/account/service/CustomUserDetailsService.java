@@ -1,7 +1,7 @@
-package com.operis.service;
+package com.operis.user.account.service;
 
-import com.operis.model.UserAccount;
-import com.operis.repository.UserAccountRepository;
+import com.operis.user.account.repository.UserAccountEntity;
+import com.operis.user.account.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,12 +16,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserAccount userAccount = userRepository.findByEmail(email)
+        UserAccountEntity userAccountEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(userAccount.getEmail())
-                .password(userAccount.getPassword())
+                .withUsername(userAccountEntity.getEmail())
+                .password(userAccountEntity.getPassword())
                 .authorities("USER")
                 .build();
     }
