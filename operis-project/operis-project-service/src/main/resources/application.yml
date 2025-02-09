@@ -11,6 +11,9 @@ spring:
       discovery:
         service-id: operis-config-server
         enabled: true
+    openfeign:
+      client:
+        refresh-enabled: true
 
 eureka:
   instance:
