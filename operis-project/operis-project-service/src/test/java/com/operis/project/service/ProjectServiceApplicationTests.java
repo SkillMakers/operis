@@ -1,4 +1,4 @@
-package com.operis;
+package com.operis.project.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
