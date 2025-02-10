@@ -6,3 +6,7 @@ spring:
     config:
       discovery:
         enabled: false
+
+logging:
+  level:
+    com.operis: DEBUG
