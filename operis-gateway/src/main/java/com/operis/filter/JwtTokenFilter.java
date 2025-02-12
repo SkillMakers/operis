@@ -1,11 +1,12 @@
 package com.operis.filter;
 
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
@@ -18,13 +19,15 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
+import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenFilter implements WebFilter {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private final JwtTokenUtil jwtTokenUtil;
 
     private final ServerSecurityContextRepository securityContextRepository = new WebSessionServerSecurityContextRepository();
 
@@ -32,21 +35,11 @@ public class JwtTokenFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-        String path = exchange.getRequest().getPath().toString();
-        if (path.equals("/api/auth/login")
-                || path.equals("/api/users/create")
-                || path.startsWith("/project-service")
-                || path.startsWith("/actuator")
-        ) {
-            // passer à la chaîne suivante sans vérification
+        if (header == null || !header.startsWith(BEARER_PREFIX)) {
             return chain.filter(exchange);
         }
 
-        if (header == null || !header.startsWith("Bearer ")) {
-            return this.unauthorizedResponse(exchange.getResponse());
-        }
-
-        String token = header.substring(7);
+        String token = header.substring(BEARER_PREFIX.length());
         JWTClaimsSet jwtClaimsSet;
         try {
             jwtClaimsSet = jwtTokenUtil.parseToken(token);
@@ -56,7 +49,7 @@ public class JwtTokenFilter implements WebFilter {
 
         String username = jwtClaimsSet.getSubject();
         if (username != null) {
-            UserDetails userDetails = new User(username, "", Collections.emptyList());
+            UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_FAKE_ADMIN_FOR_DEMO")));
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextImpl securityContext = new SecurityContextImpl();
             securityContext.setAuthentication(authentication);
@@ -73,5 +66,4 @@ public class JwtTokenFilter implements WebFilter {
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.setComplete();
     }
-
 }

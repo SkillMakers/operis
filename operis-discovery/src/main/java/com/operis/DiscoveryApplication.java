@@ -2,12 +2,14 @@ package com.operis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
-@EnableConfigServer
-public class OperisConfigApplication {
+@EnableEurekaServer
+public class DiscoveryApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(OperisConfigApplication.class, args);
+        SpringApplication.run(DiscoveryApplication.class, args);
     }
+
 }

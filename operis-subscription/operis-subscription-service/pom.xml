@@ -13,7 +13,7 @@
 
     <properties>
         <operis.subscription.model.version>1.0-SNAPSHOT</operis.subscription.model.version>
-        <main.class>com.operis.operis.subscription.service.OperisSubscriptionServiceApplication</main.class>
+        <main.class>com.operis.operis.subscription.service.SubscriptionServiceApplication</main.class>
     </properties>
 
     <dependencies>
@@ -63,7 +63,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        
+
         <!-- Actuator dependencies  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
