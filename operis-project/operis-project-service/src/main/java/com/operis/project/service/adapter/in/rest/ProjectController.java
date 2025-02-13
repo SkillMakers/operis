@@ -63,10 +63,6 @@ public class ProjectController {
     @GetMapping
     @Operation(summary = "Get all projects", description = "Retrieves a list of all projects.")
     public List<ProjectDto> getAllProjects() {
-        log.debug("Getting all projects");
-
-        log.info("Getting all projects");
-
         return projectUseCases.getAllProjects().stream()
                 .map(ProjectDto::from)
                 .toList();
