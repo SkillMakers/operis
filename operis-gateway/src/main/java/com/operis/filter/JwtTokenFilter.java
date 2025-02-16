@@ -36,7 +36,8 @@ public class JwtTokenFilter implements WebFilter {
         String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (header == null || !header.startsWith(BEARER_PREFIX)) {
-            return chain.filter(exchange);
+            // ⚠️ Suppression du contexte de sécurité si aucun token présent
+            return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.clearContext());
         }
 
         String token = header.substring(BEARER_PREFIX.length());
