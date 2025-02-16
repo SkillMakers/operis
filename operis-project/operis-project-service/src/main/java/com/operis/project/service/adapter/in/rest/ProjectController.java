@@ -62,50 +62,50 @@ public class ProjectController {
 
     @GetMapping
     @Operation(summary = "Get all projects", description = "Retrieves a list of all projects.")
-    public List<ProjectDto> getAllProjects() {
-        return projectUseCases.getAllProjects().stream()
+    public ResponseEntity<List<ProjectDto>> getAllProjects() {
+        return ResponseEntity.ok(projectUseCases.getAllProjects().stream()
                 .map(ProjectDto::from)
-                .toList();
+                .toList());
     }
 
     @PutMapping("/{projectId}/name")
     @Operation(summary = "Change project name", description = "Updates the name of an existing project.")
-    public ProjectDto changeProjectName(
+    public ResponseEntity<ProjectDto> changeProjectName(
             @PathVariable("projectId") String projectId,
             @RequestBody ChangeProjectNamePayload payload) {
-        return ProjectDto.from(
+        return ResponseEntity.ok(ProjectDto.from(
                 projectUseCases.changeProjectName(payload.toCommand(projectId))
-        );
+        ));
     }
 
     @PutMapping("/{projectId}/description")
     @Operation(summary = "Change project description", description = "Updates the description of an existing project.")
-    public ProjectDto changeProjectDescription(
+    public ResponseEntity<ProjectDto> changeProjectDescription(
             @PathVariable("projectId") String projectId,
             @RequestBody ChangeProjectDescriptionPayload payload) {
-        return ProjectDto.from(
+        return ResponseEntity.ok(ProjectDto.from(
                 projectUseCases.changeProjectDescription(payload.toCommand(projectId))
-        );
+        ));
     }
 
     @PutMapping("/{projectId}/tasks")
     @Operation(summary = "Add a task to project", description = "Adds a new task to an existing project.")
-    public ProjectDto addTaskToProject(@PathVariable("projectId") String projectId,
-                                       @RequestBody AddTaskToProjectPayload payload,
-                                       @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<ProjectDto> addTaskToProject(@PathVariable("projectId") String projectId,
+                                                       @RequestBody AddTaskToProjectPayload payload,
+                                                       @RequestHeader("Authorization") String authorizationHeader) {
         String connectedUserEmail = jwtTokenService.extractUserEmail(authorizationHeader);
-        return ProjectDto.from(
+        return ResponseEntity.ok(ProjectDto.from(
                 projectUseCases.addTaskToProject(payload.toCommand(projectId, connectedUserEmail))
-        );
+        ));
     }
 
     @PutMapping("/{projectId}/members")
     @Operation(summary = "Change project members", description = "Updates the members of an existing project.")
-    public ProjectDto changeProjectMembers(@PathVariable("projectId") String projectId,
+    public ResponseEntity<ProjectDto> changeProjectMembers(@PathVariable("projectId") String projectId,
                                            @RequestBody ChangeProjectMembersPayload payload) {
-        return ProjectDto.from(
+        return ResponseEntity.ok(ProjectDto.from(
                 projectUseCases.changeProjectMembers(payload.toCommand(projectId))
-        );
+        ));
     }
 
     @DeleteMapping("/{projectId}")
