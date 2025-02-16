@@ -32,7 +32,7 @@ public class GatewayCorrelationIdFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
 
         String correlationId = request.getHeaders().getFirst(CORRELATION_ID_HEADER);
-        if (correlationId == null || correlationId.isEmpty()) {
+        if (correlationId == null || correlationId.isBlank()) {
             correlationId = UUID.randomUUID().toString();
         }
 

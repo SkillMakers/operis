@@ -27,7 +27,7 @@ public class MDCProjectCorrelationIdInterceptor extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String correlationId = request.getHeader(CORRELATION_ID_HEADER);
-        if (correlationId == null || correlationId.isEmpty()) {
+        if (correlationId == null || correlationId.isBlank()) {
             correlationId = UUID.randomUUID().toString();
         }
 
