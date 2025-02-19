@@ -8,9 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/ibouakl/operis-config-repo
-          username: ibouakl
-          password: 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
+          uri: https://github.com/SkillMakers/operis-config-repo
 
 eureka:
   client:
